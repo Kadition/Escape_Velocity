@@ -13,11 +13,11 @@ public class PlayerManager : NetworkBehaviour
         if (IsOwner)
         {
             Debug.Log("satrtatrar");
-            // updateIDRpc(SteamClient.SteamId);
+            updateIDRpc(SteamClient.SteamId);
         }
         else
         {
-            // requestIDRpc();
+            requestIDRpc();
         }
     }
 
@@ -49,24 +49,24 @@ public class PlayerManager : NetworkBehaviour
             VoiceRelay.instance.vocalAudioPlayers.Add(steamiD, vocalAudioPlayer);
         }
 
-        StartCoroutine(enumeratorThingy());
+    //     StartCoroutine(enumeratorThingy());
     }
 
-    IEnumerator enumeratorThingy()
-    {
-        yield return new WaitForSeconds(5);
+    // IEnumerator enumeratorThingy()
+    // {
+    //     yield return new WaitForSeconds(5);
 
-        VoiceRelay.instance.vocalAudioPlayers.Clear();
+    //     VoiceRelay.instance.vocalAudioPlayers.Clear();
 
-        foreach (GameObject player in GameObject.FindGameObjectsWithTag("Player"))
-        {
-            VocalAudioPlayer vocalAudioPlayer = player.GetComponent<VocalAudioPlayer>();
+    //     foreach (GameObject player in GameObject.FindGameObjectsWithTag("Player"))
+    //     {
+    //         VocalAudioPlayer vocalAudioPlayer = player.GetComponent<VocalAudioPlayer>();
 
-            ulong steamiD = player.GetComponent<PlayerManager>().steam_id;
+    //         ulong steamiD = player.GetComponent<PlayerManager>().steam_id;
 
-            Debug.Log("steam id: " + steamiD);
+    //         Debug.Log("steam id: " + steamiD);
 
-            VoiceRelay.instance.vocalAudioPlayers.Add(steamiD, vocalAudioPlayer);
-        }
-    }
+    //         VoiceRelay.instance.vocalAudioPlayers.Add(steamiD, vocalAudioPlayer);
+    //     }
+    // }
 }

@@ -50,8 +50,6 @@ public class PlayerNetworkManager : NetworkBehaviour
 
         GameObject playerInstance = Instantiate(playerPrefab);
 
-        playerInstance.GetComponent<PlayerManager>().steam_id = steamID;
-
         playerInstance.GetComponent<NetworkObject>().SpawnWithOwnership(id);
     }
 
