@@ -3,21 +3,61 @@ using UnityEngine;
 using Steamworks;
 using Steamworks.Data;
 using System.IO;
+using System.Runtime.InteropServices;
+using System.Collections.Generic;
 
 public class VoiceRelayMono : MonoBehaviour
 {
-    ConnectionManager connectionManager = new();
-    VoiceRelayCreate voiceRelay = new();
-    private MemoryStream output;
+    public static VoiceRelayMono instance;
+    // private MemoryStream output;
     private MemoryStream stream;
-    private MemoryStream input;
+
+    // TODO - update this when a player spawns
+
+    // the key is the steam id
+    public Dictionary<ulong, VocalAudioPlayer> vocalAudioPlayers = new();
+    // private MemoryStream input;
+
+    // private int optimalRate;
+    // private int clipBufferSize;
+    // private float[] clipBuffer;
+
+    // private int playbackBuffer;
+    // private int dataPosition;
+    // private int dataReceived;
+
+    void Awake()
+    {
+        if (instance == null)
+        {
+            instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
+
     void Start()
     {
-        stream = new MemoryStream();
-        output = new MemoryStream();
-        input = new MemoryStream();
+        // optimalRate = (int)SteamUser.OptimalSampleRate;
 
-        voiceRelay.Start();
+        // clipBufferSize = optimalRate * 5;
+        // clipBuffer = new float[clipBufferSize];
+
+        stream = new MemoryStream();
+        // output = new MemoryStream();
+        // input = new MemoryStream();
+
+        // TODO - only the host should open the socket
+        if (true)
+        {
+            VoiceRelayCreate.socketManager = SteamNetworkingSockets.CreateRelaySocket<VoiceRelayCreate>();
+        }
+
+        // source.clip = AudioClip.Create("VoiceData", (int)256, 1, (int)optimalRate, true, OnAudioRead, null);
+        // source.loop = true;
+        // source.Play();
     }
 
     public void ConnectToRelay(ulong hostSteamID)
@@ -25,7 +65,7 @@ public class VoiceRelayMono : MonoBehaviour
         // TODO - all shhould do this, even host
         if (true)
         {
-            connectionManager = SteamNetworkingSockets.ConnectRelay<ConnectionManager>(hostSteamID);
+            VoiceRelayConnect.connectionManager = SteamNetworkingSockets.ConnectRelay<VoiceRelayConnect>(hostSteamID);
         }
         SteamUser.VoiceRecord = true;
     }
@@ -42,7 +82,7 @@ public class VoiceRelayMono : MonoBehaviour
             {
                 fixed (byte* ptr = stream.GetBuffer())
                 {
-                    connectionManager.Connection.SendMessage((IntPtr)ptr, compressedWritten, SendType.Unreliable);
+                    VoiceRelayConnect.connectionManager.Connection.SendMessage((IntPtr)ptr, compressedWritten, SendType.Unreliable);
                 }
             }
         }
@@ -52,33 +92,97 @@ public class VoiceRelayMono : MonoBehaviour
     void OnDestroy()
     {
         SteamUser.VoiceRecord = false;
-        connectionManager.Connection.Close();
+        VoiceRelayConnect.connectionManager.Connection.Close();
         VoiceRelayCreate.socketManager.Close();
-        
+
         // dont do these on menu, and maybe start recording voice even in menu lol
         stream.Close();
-        input.Close();
-        output.Close();
+        // input.Close();
+        // output.Close();
     }
+
+    // public void PlayAudio(byte[] compressed, int bytesWritten)
+    // {
+    //     input.Write(compressed, 0, bytesWritten);
+    //     input.Position = 0;
+
+    //     int uncompressedWritten = SteamUser.DecompressVoice(input, bytesWritten, output);
+    //     input.Position = 0;
+
+    //     byte[] outputBuffer = output.GetBuffer();
+    //     WriteToClip(outputBuffer, uncompressedWritten);
+    //     output.Position = 0;
+    // }
+
+    // void WriteToClip(byte[] uncompressed, int iSize)
+    // {
+    //     for (int i = 0; i < iSize; i += 2)
+    //     {
+    //         // insert converted float to buffer
+    //         float converted = (short)(uncompressed[i] | uncompressed[i + 1] << 8) / 32767.0f;
+    //         clipBuffer[dataReceived] = converted;
+
+    //         // buffer loop
+    //         dataReceived = (dataReceived + 1) % clipBufferSize;
+
+    //         playbackBuffer++;
+    //     }
+    // }
+
+    // private void OnAudioRead(float[] data)
+    // {
+    //     for (int i = 0; i < data.Length; ++i)
+    //     {
+    //         data[i] = 0;
+
+    //         if (playbackBuffer > 0)
+    //         {
+    //             // current data position playing
+    //             dataPosition = (dataPosition + 1) % clipBufferSize;
+
+    //             data[i] = clipBuffer[dataPosition];
+
+    //             playbackBuffer --;
+    //         }
+    //     }
+    // }
+
 }
 
 public class VoiceRelayConnect : ConnectionManager
 {
-    ConnectionManager connectionManager
+    public static VoiceRelayConnect connectionManager;
+
+    public ulong lastID = 0;
+
+    public override void OnConnected(ConnectionInfo info)
+    {
+        base.OnConnected(info);
+        Debug.Log($"you have connected");
+    }
+
+    public override void OnMessage(IntPtr data, int size, long messageNum, long recvTime, int channel)
+    {
+        base.OnMessage(data, size, messageNum, recvTime, channel);
+
+        if (size == sizeof(ulong))
+        {
+            lastID = (ulong)data.ToInt64();
+        }
+        else
+        {
+            byte[] buffer = new byte[size];
+
+            Marshal.Copy(data, buffer, 0, size);
+
+            VoiceRelayMono.instance.vocalAudioPlayers[lastID].PlayAudio(buffer, size);
+        }        
+    }
 }
 
 public class VoiceRelayCreate : SocketManager
 {
-    public static SocketManager socketManager;
-
-    public void Start()
-    {
-        // TODO - only the host should open the socket
-        if (true)
-        {
-            socketManager = SteamNetworkingSockets.CreateRelaySocket<SocketManager>();
-        }
-    }
+    public static VoiceRelayCreate socketManager;
 
     public override void OnConnecting(Connection connection, ConnectionInfo data)
     {
@@ -109,6 +213,18 @@ public class VoiceRelayCreate : SocketManager
             if (connectionMade == connection)
             {
                 continue;
+            }
+
+            ulong steamID = identity.SteamId;
+
+            byte[] steamIDBytes = BitConverter.GetBytes(steamID);
+
+            unsafe
+            {
+                fixed (byte* ptr = steamIDBytes)
+                {
+                    connectionMade.SendMessage((IntPtr)ptr, sizeof(ulong), SendType.Unreliable);
+                }
             }
 
             connectionMade.SendMessage(data, size, SendType.Unreliable);
