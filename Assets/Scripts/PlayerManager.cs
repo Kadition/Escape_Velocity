@@ -13,11 +13,11 @@ public class PlayerManager : NetworkBehaviour
         if (IsOwner)
         {
             Debug.Log("satrtatrar");
-            updateIDRpc(SteamClient.SteamId);
+            // updateIDRpc(SteamClient.SteamId);
         }
         else
         {
-            requestIDRpc();
+            // requestIDRpc();
         }
     }
 
