@@ -361,6 +361,7 @@ GameObject:
   - component: {fileID: 330585544}
   - component: {fileID: 330585547}
   - component: {fileID: 330585548}
+  - component: {fileID: 330585549}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -499,6 +500,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MainMenuMusicPlayer
   mainMenuMusic: {fileID: 8300000, guid: cab2b5257aaa5d5488056ee2552cc77a, type: 3}
+--- !u!114 &330585549
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 330585543}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 998dd0827e6e23f4bb6a8c8416427592, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlaySoundFXContinuously
+  clip: {fileID: 8300000, guid: 83c419d3ed79d0749966cb695ab87667, type: 3}
+  volume: 0.5
+  volumeIncreases: 1
 --- !u!1 &410087039
 GameObject:
   m_ObjectHideFlags: 0
