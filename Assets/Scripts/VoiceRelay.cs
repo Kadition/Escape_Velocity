@@ -5,6 +5,10 @@ using Steamworks.Data;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Collections.Generic;
+using Unity.Netcode;
+
+
+// TODO - THINGSSSS - every time a player spawns, add them to dictionary
 
 public class VoiceRelayMono : MonoBehaviour
 {
@@ -49,8 +53,8 @@ public class VoiceRelayMono : MonoBehaviour
         // output = new MemoryStream();
         // input = new MemoryStream();
 
-        // TODO - only the host should open the socket
-        if (true)
+        // * only the host should open the socket
+        if (NetworkManager.Singleton.IsHost)
         {
             VoiceRelayCreate.socketManager = SteamNetworkingSockets.CreateRelaySocket<VoiceRelayCreate>();
         }
@@ -58,21 +62,18 @@ public class VoiceRelayMono : MonoBehaviour
         // source.clip = AudioClip.Create("VoiceData", (int)256, 1, (int)optimalRate, true, OnAudioRead, null);
         // source.loop = true;
         // source.Play();
+        ConnectToRelay(76561198898264653);
     }
 
     public void ConnectToRelay(ulong hostSteamID)
     {
         // TODO - all shhould do this, even host
-        if (true)
-        {
-            VoiceRelayConnect.connectionManager = SteamNetworkingSockets.ConnectRelay<VoiceRelayConnect>(hostSteamID);
-        }
+        VoiceRelayConnect.connectionManager = SteamNetworkingSockets.ConnectRelay<VoiceRelayConnect>(hostSteamID);
         SteamUser.VoiceRecord = true;
     }
 
     void Update()
     {
-        // TODO - in lobby
         if (SteamUser.HasVoiceData)
         {
             int compressedWritten = SteamUser.ReadVoiceData(stream);
@@ -88,7 +89,6 @@ public class VoiceRelayMono : MonoBehaviour
         }
     }
 
-    // TODO - or on returning to lobby
     void OnDestroy()
     {
         SteamUser.VoiceRecord = false;
@@ -171,6 +171,11 @@ public class VoiceRelayConnect : ConnectionManager
         }
         else
         {
+            if(lastID == 0)
+            {
+                return;
+            }
+
             byte[] buffer = new byte[size];
 
             Marshal.Copy(data, buffer, 0, size);

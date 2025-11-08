@@ -15,8 +15,6 @@ public class VocalAudioPlayer : MonoBehaviour
     private int dataPosition;
     private int dataReceived;
 
-    public int ID;
-
     [SerializeField] private AudioSource source;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -30,7 +28,7 @@ public class VocalAudioPlayer : MonoBehaviour
         output = new MemoryStream();
         input = new MemoryStream();
 
-        source.clip = AudioClip.Create($"VoiceData {ID}", (int)256, 1, (int)optimalRate, true, OnAudioRead, null);
+        source.clip = AudioClip.Create($"VoiceData + {GetInstanceID()}", (int)256, 1, (int)optimalRate, true, OnAudioRead, null);
         source.loop = true;
         source.Play();
     }
