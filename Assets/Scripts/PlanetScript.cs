@@ -1,10 +1,12 @@
 // PlanetScript.cs
+using System;
+using System.Diagnostics.Contracts;
 using UnityEngine;
 
 public class PlanetScript : MonoBehaviour
 {
-    public Vector3 gravityVector = new Vector3(0f, -9.81f, 0f);
-
+    public float maxAcc = 100f;
+    public float dropOff = 0.5f;
     public float affectRadiusFactor = 1.5f;
 
 
@@ -24,10 +26,11 @@ public class PlanetScript : MonoBehaviour
 
     void FixedUpdate()
     {
-        
-        if(Vector3.Distance(player.transform.position, transform.position) <= visualRadius * affectRadiusFactor){
+        float distance = Vector3.Distance(player.transform.position, transform.position);
+        if(distance <= visualRadius * affectRadiusFactor){
             // Make a new vector that is a rotated version of gravityVector
-            Vector3 g = (transform.position - player.transform.position).normalized * gravityVector.magnitude;
+
+            Vector3 g = (transform.position - player.transform.position).normalized * Mathf.Lerp(maxAcc, maxAcc*dropOff, (distance - visualRadius) / (visualRadius * affectRadiusFactor));
 
             pc.updateGravity(g);
         }
