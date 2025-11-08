@@ -44,6 +44,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1236dbba8d2c74bf89fe2168e056f5bc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CameraLook
+  ShowTopMostFoldoutHeaderGroup: 1
   mouseSensitivity: 300
 --- !u!1 &7183096211676564755
 GameObject:
@@ -180,7 +181,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 3403041415
+  GlobalObjectIdHash: 1326372182
   InScenePlacedSourceGlobalObjectIdHash: 0
   DeferredDespawnTick: 0
   Ownership: 1
@@ -217,7 +218,7 @@ Rigidbody:
   m_GameObject: {fileID: 7183096211676564755}
   serializedVersion: 5
   m_Mass: 1
-  m_LinearDamping: 2
+  m_LinearDamping: 0
   m_AngularDamping: 0.5
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
@@ -312,13 +313,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: '::'
   ShowTopMostFoldoutHeaderGroup: 1
   grounded: 0
-  NormGravity: {x: 0, y: -9.81, z: 0}
-  gravityVector: {x: 0, y: 0, z: 0}
-  gravityUpdated: 0
   rig: {fileID: 223971613767819608}
   moveForce: 40
   jumpForce: 6
   flipSpeed: 2
+  spaceMovementFactor: 0.1
+  maxGroundedVelocity: 10
+  lastGravityDir: {x: 0, y: 0, z: 0}
 --- !u!114 &2872625917057936138
 MonoBehaviour:
   m_ObjectHideFlags: 0
