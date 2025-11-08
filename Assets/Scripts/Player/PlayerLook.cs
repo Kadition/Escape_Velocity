@@ -1,17 +1,28 @@
+using Unity.Netcode;
 using UnityEngine;
 
-public class PlayerLook : MonoBehaviour
+public class PlayerLook : NetworkBehaviour
 {
     public float mouseSensitivity = 300f;
-    private PlayerController player;
+    [SerializeField] private PlayerController player;
 
-    void Start(){
+    void Start()
+    {
+        if (!IsOwner)
+        {
+            return;
+        }
+        
         Cursor.lockState = CursorLockMode.Locked; 
         Cursor.visible = false;
-        player = GetComponent<PlayerController>();
     }
     void Update()
     {
+        if (!IsOwner)
+        {
+            return;
+        }
+
         float mouseX = -Input.GetAxis("Mouse X") * mouseSensitivity * Time.deltaTime;
 
         // Use player-relative UP, not world up

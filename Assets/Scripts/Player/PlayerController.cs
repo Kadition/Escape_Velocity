@@ -16,9 +16,6 @@ public class PlayerController : NetworkBehaviour
 
     GameObject[] planetList;
 
-    // TODO - START JHERERERE
-    [SerializeField] InputActionReference move;
-
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -92,8 +89,6 @@ public class PlayerController : NetworkBehaviour
 
         inputX = Input.GetAxisRaw("Horizontal");
         inputZ = Input.GetAxisRaw("Vertical");
-
-        Debug.Log(inputX + "  " + inputZ);
 
         if (Input.GetKeyDown(KeyCode.Space))
             jumpPressed = true;

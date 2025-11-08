@@ -17,5 +17,6 @@ public class CameraLook : MonoBehaviour
 
         // if you need the camera to not be on the player, do this
         Camera.main.transform.position = transform.position;
+        Camera.main.transform.rotation = transform.rotation;
     }
 }
