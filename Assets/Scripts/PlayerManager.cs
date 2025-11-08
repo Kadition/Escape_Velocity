@@ -1,11 +1,16 @@
 using Unity.Netcode;
 using UnityEngine;
 using Steamworks;
-using System.Collections;
 
 public class PlayerManager : NetworkBehaviour
 {
     public ulong steam_id;
+
+    [SerializeField] SpringJointMaker springJointMaker;
+
+    bool holdingPlayer = false;
+
+    GameObject attachedPlayer = null;
 
     void Start()
     {
@@ -49,7 +54,7 @@ public class PlayerManager : NetworkBehaviour
             VoiceRelay.instance.vocalAudioPlayers.Add(steamiD, vocalAudioPlayer);
         }
 
-    //     StartCoroutine(enumeratorThingy());
+        //     StartCoroutine(enumeratorThingy());
     }
 
     // IEnumerator enumeratorThingy()
@@ -69,4 +74,77 @@ public class PlayerManager : NetworkBehaviour
     //         VoiceRelay.instance.vocalAudioPlayers.Add(steamiD, vocalAudioPlayer);
     //     }
     // }
+
+    void Update()
+    {
+        if(IsOwner && Input.GetKeyUp(KeyCode.E))
+        {
+            if (holdingPlayer)
+            {
+                OnReleasePlayer();
+            }
+            else
+            {
+                foreach (GameObject player in GameObject.FindGameObjectsWithTag("Player"))
+                {
+                    if (player == gameObject)
+                    {
+                        continue;
+                    }
+
+                    if (Vector3.Distance(player.transform.position, transform.position) < 3)
+                    {
+                        OnClickPlayer(player.GetComponent<PlayerManager>().steam_id);
+                        break;
+                    }
+                }
+            }   
+        }
+    }
+
+    [Rpc(SendTo.Everyone)]
+    public void OnClickPlayer(ulong steamID)
+    {
+        attachedPlayer = null;
+
+        foreach (GameObject player in GameObject.FindGameObjectsWithTag("Player"))
+        {
+            if (player == gameObject)
+            {
+                continue;
+            }
+
+            if (player.GetComponent<PlayerManager>().steam_id == steamID)
+            {
+                attachedPlayer = player;
+                break;
+            }
+        }
+
+        springJointMaker.MakeJoint(attachedPlayer.GetComponent<Rigidbody>());
+
+        springJointMaker.connectedPlayer = attachedPlayer.transform;
+
+        springJointMaker.rope.SetActive(true);
+
+        springJointMaker.attached = true;
+
+        holdingPlayer = true;
+    }
+    
+    [Rpc(SendTo.Everyone)]
+    public void OnReleasePlayer()
+    {
+        attachedPlayer = null;
+
+        springJointMaker.connectedPlayer = null;
+
+        springJointMaker.attached = false;
+
+        springJointMaker.rope.SetActive(false);
+
+        holdingPlayer = false;
+
+        Destroy(GetComponent<SpringJoint>());
+    }
 }
