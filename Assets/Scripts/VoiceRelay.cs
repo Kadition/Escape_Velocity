@@ -21,6 +21,8 @@ public class VoiceRelay : MonoBehaviour
     // the key is the steam id
     public Dictionary<ulong, VocalAudioPlayer> vocalAudioPlayers = new();
 
+    bool oneSec = false;
+
     void Awake()
     {
         if (instance == null)
@@ -36,11 +38,20 @@ public class VoiceRelay : MonoBehaviour
     void Start()
     {
         stream = new MemoryStream();
+
+        StartCoroutine(oneSecEnumor());
     }
 
-    void LateUpdate()
+    IEnumerator oneSecEnumor()
     {
-        if (SteamUser.HasVoiceData)
+        yield return new WaitForSeconds(1);
+
+        oneSec = true;
+    }
+
+    void Update()
+    {
+        if (SteamUser.HasVoiceData && oneSec)
         {
             Debug.Log("has voice data");
             int compressedWritten = SteamUser.ReadVoiceData(stream);
