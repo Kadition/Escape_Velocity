@@ -1,5 +1,6 @@
 using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PlayerController : NetworkBehaviour
 {
@@ -7,7 +8,7 @@ public class PlayerController : NetworkBehaviour
     public Vector3 NormGravity = new Vector3(0f, -9.81f, 0f);
     public Vector3 gravityVector;
     public bool gravityUpdated;
-    private Rigidbody rig;
+    [SerializeField] private Rigidbody rig;
     public float moveForce = 20f;
     public float jumpForce = 6f;
 
@@ -15,18 +16,21 @@ public class PlayerController : NetworkBehaviour
 
     GameObject[] planetList;
 
+    // TODO - START JHERERERE
+    [SerializeField] InputActionReference move;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         if (!IsOwner)
         {
+            Debug.Log("AAAAAAAAAA");
             return;
         }
 
         grounded = false;
         gravityVector = NormGravity;
         gravityUpdated = false;
-        rig = GetComponent<Rigidbody>();
         rig.useGravity = false;
 
         planetList = GameObject.FindGameObjectsWithTag("Planet");
@@ -89,6 +93,8 @@ public class PlayerController : NetworkBehaviour
         inputX = Input.GetAxisRaw("Horizontal");
         inputZ = Input.GetAxisRaw("Vertical");
 
+        Debug.Log(inputX + "  " + inputZ);
+
         if (Input.GetKeyDown(KeyCode.Space))
             jumpPressed = true;
     }
@@ -97,8 +103,11 @@ public class PlayerController : NetworkBehaviour
     {
         if (!IsOwner)
         {
+            Debug.Log("AAAAAAAAAA 2");
             return;
         }
+
+        Debug.Log("AAAAAAAAAA 3");
         
         foreach (GameObject planet in planetList)
         {
@@ -140,10 +149,10 @@ public class PlayerController : NetworkBehaviour
         Vector3 moveDir = (transform.forward * z + transform.right * x).normalized;
 
         // Apply movement force continuously
-        rig.AddForce(moveDir * moveForce, ForceMode.Acceleration);
+        rig.AddForce(moveDir * moveForce, ForceMode.Force);
 
         // Apply gravity continuously
-        rig.AddForce(gravityVector, ForceMode.Acceleration);
+        rig.AddForce(gravityVector, ForceMode.Force);
 
         // Jump against gravity
         if (jumpPressed && grounded)
