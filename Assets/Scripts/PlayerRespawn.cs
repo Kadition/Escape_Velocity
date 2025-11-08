@@ -47,9 +47,11 @@ public class PlayerRespawn : MonoBehaviour
             blackImage.color = color;
             yield return null;
         }
+        // Respawn player at spawn point
+        transform.position = respawnPoint;
         // Hold black for a moment
         yield return new WaitForSeconds(2f);
-        transform.position = respawnPoint;
+        
         // Fade back to transparent
         while (color.a > 0)
         {

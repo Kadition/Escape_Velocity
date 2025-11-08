@@ -41,6 +41,7 @@
   <Project Path="UnityEditor.UI.csproj" />
   <Project Path="Unity.Netcode.Editor.csproj" />
   <Project Path="Unity.Networking.Editor.csproj" />
+  <Project Path="Unity.2D.Sprite.Editor.csproj" />
   <Project Path="Unity.AI.Navigation.Editor.csproj" />
   <Project Path="Unity.Netcode.Editor.CodeGen.csproj" />
   <Project Path="Unity.Multiplayer.Center.Common.csproj" />
@@ -60,6 +61,7 @@
   <Project Path="Unity.Netcode.PackageChecker.Editor.csproj" />
   <Project Path="Unity.RenderPipelines.Universal.Shaders.csproj" />
   <Project Path="Unity.RenderPipelines.Core.Runtime.Shared.csproj" />
+  <Project Path="Unity.2D.Sprite.AIIntegration.Editor.csproj" />
   <Project Path="Assembly-CSharp.csproj" />
   <Project Path="Facepunch Transport for Netcode for GameObjects.csproj" />
   <Project Path="Unity.VisualScripting.DocCodeExamples.csproj" />
