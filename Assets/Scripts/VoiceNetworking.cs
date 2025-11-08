@@ -59,6 +59,9 @@ public class VoiceNetworking : NetworkBehaviour
     [Rpc(SendTo.Everyone)]
     public void voiceDataRpc(byte[] data, ulong steamID, int size)
     {
-        VoiceRelay.instance.vocalAudioPlayers[steamID].playAudio(data, size);
+        if (VoiceRelay.instance.vocalAudioPlayers.ContainsKey(steamID))
+        {
+            VoiceRelay.instance.vocalAudioPlayers[steamID].playAudio(data, size);
+        }
     }
 }
