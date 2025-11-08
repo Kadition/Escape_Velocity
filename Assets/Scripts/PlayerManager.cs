@@ -15,6 +15,19 @@ public class PlayerManager : NetworkBehaviour
             Debug.Log("satrtatrar");
             updateIDRpc(SteamClient.SteamId);
         }
+        else
+        {
+            requestIDRpc();
+        }
+    }
+
+    [Rpc(SendTo.Everyone)]
+    public void requestIDRpc()
+    {
+        if(IsOwner)
+        {
+            updateIDRpc(SteamClient.SteamId);
+        }
     }
 
     [Rpc(SendTo.Everyone)]
