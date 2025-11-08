@@ -162,7 +162,7 @@ public class GameNetworkManager : MonoBehaviour
 
         SteamUser.VoiceRecord = true;
 
-        VoiceNetworking.instance.spawnMeInCoachRpc(NetworkManager.Singleton.LocalClientId, SteamClient.SteamId);
+        PlayerNetworkManager.instance.spawnMeInCoachRpc(NetworkManager.Singleton.LocalClientId, SteamClient.SteamId);
     }
 
     public void StartClient(SteamId _sId)
@@ -186,12 +186,12 @@ public class GameNetworkManager : MonoBehaviour
     {
         yield return new WaitForSeconds(1);
 
-        VoiceNetworking.instance.spawnMeInCoachRpc(NetworkManager.Singleton.LocalClientId, SteamClient.SteamId);
+        PlayerNetworkManager.instance.spawnMeInCoachRpc(NetworkManager.Singleton.LocalClientId, SteamClient.SteamId);
     }
 
     public void Disconnected()
     {
-        VoiceNetworking.instance.removeMeFromVocalDictionaryRpc(SteamClient.SteamId);
+        PlayerNetworkManager.instance.removeMeFromVocalDictionaryRpc(SteamClient.SteamId);
 
         currentLobby?.Leave();
 

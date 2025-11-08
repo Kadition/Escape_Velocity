@@ -46,7 +46,7 @@ public class VoiceRelay : MonoBehaviour
             int compressedWritten = SteamUser.ReadVoiceData(stream);
             stream.Position = 0;
 
-            VoiceNetworking.instance.voiceDataRpc(stream.GetBuffer(), SteamClient.SteamId, compressedWritten);
+            PlayerNetworkManager.instance.voiceDataRpc(stream.GetBuffer(), SteamClient.SteamId, compressedWritten);
         }
     }
 

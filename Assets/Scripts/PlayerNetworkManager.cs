@@ -4,9 +4,9 @@ using Steamworks;
 using Steamworks.Data;
 
 
-public class VoiceNetworking : NetworkBehaviour
+public class PlayerNetworkManager : NetworkBehaviour
 {
-    public static VoiceNetworking instance;
+    public static PlayerNetworkManager instance;
     [SerializeField] private GameObject playerPrefab;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
 

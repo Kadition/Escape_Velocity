@@ -498,7 +498,7 @@ GameObject:
   - component: {fileID: 521836230}
   - component: {fileID: 521836232}
   m_Layer: 0
-  m_Name: VoiceNetwork
+  m_Name: PlayerNetwork
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
