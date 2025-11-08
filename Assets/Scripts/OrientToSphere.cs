@@ -9,18 +9,22 @@ public class OrientToSphere : MonoBehaviour
     [SerializeField] Vector3 planetPos; // The position of the nearest planet
     [SerializeField] Vector3 playerToPlanetVector; // Vector from player to nearest planet
     [SerializeField] GameObject playerCenter; // the player gameobject
+    [SerializeField] public bool scriptIsEnabled;
     void Start()
     {
-        
+        scriptIsEnabled = true;
     }
 
     // Update is called once per frame
     void Update()
     {
-        planetPos = GetNearestPlanet().transform.position;
-        playerToPlanetVector = planetPos - playerCenter.transform.position;
-        //playerToPlanetVector.z += 90; //offset to keep camera in line with global z axis
-        transform.up = -playerToPlanetVector.normalized; // Set the camera's up direction to be away from the center of the current planet
+        if (scriptIsEnabled)
+        {
+            planetPos = GetNearestPlanet().transform.position;
+            playerToPlanetVector = planetPos - playerCenter.transform.position;
+            transform.up = -playerToPlanetVector.normalized; // Set the camera's up direction to be away from the center of the current planet
+        }
+        
     
     }
 
