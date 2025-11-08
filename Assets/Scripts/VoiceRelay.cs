@@ -6,6 +6,7 @@ using System.IO;
 using System.Runtime.InteropServices;
 using System.Collections.Generic;
 using Unity.Netcode;
+using System.Collections;
 
 
 // TODO - THINGSSSS - every time a player spawns, add them to dictionary
@@ -42,7 +43,7 @@ public class VoiceRelayMono : MonoBehaviour
         }
     }
 
-    void Start()
+    public void OnLobbyCreate()
     {
         // optimalRate = (int)SteamUser.OptimalSampleRate;
 
@@ -53,22 +54,32 @@ public class VoiceRelayMono : MonoBehaviour
         // output = new MemoryStream();
         // input = new MemoryStream();
 
-        // * only the host should open the socket
-        if (NetworkManager.Singleton.IsHost)
-        {
-            VoiceRelayCreate.socketManager = SteamNetworkingSockets.CreateRelaySocket<VoiceRelayCreate>();
-        }
+        // // * only the host should open the socket
+        // if (NetworkManager.Singleton.IsHost)
+        // {
+        //     Debug.Log("opening socket");
+        //     VoiceRelayCreate.socketManager = SteamNetworkingSockets.CreateRelaySocket<VoiceRelayCreate>();
+        // }
 
         // source.clip = AudioClip.Create("VoiceData", (int)256, 1, (int)optimalRate, true, OnAudioRead, null);
         // source.loop = true;
         // source.Play();
+
+        // TODO - this
         ConnectToRelay(76561198898264653);
     }
 
     public void ConnectToRelay(ulong hostSteamID)
     {
+        // * only the host should open the socket
+        if (NetworkManager.Singleton.IsHost)
+        {
+            Debug.Log("opening socket");
+            VoiceRelayCreate.socketManager = SteamNetworkingSockets.CreateRelaySocket<VoiceRelayCreate>(12346);
+        }
         // TODO - all shhould do this, even host
-        VoiceRelayConnect.connectionManager = SteamNetworkingSockets.ConnectRelay<VoiceRelayConnect>(hostSteamID);
+        SteamId steamId = hostSteamID;
+        VoiceRelayConnect.connectionManager = SteamNetworkingSockets.ConnectRelay<VoiceRelayConnect>(steamId);
         SteamUser.VoiceRecord = true;
     }
 
@@ -76,6 +87,7 @@ public class VoiceRelayMono : MonoBehaviour
     {
         if (SteamUser.HasVoiceData)
         {
+            Debug.Log("has voice data");
             int compressedWritten = SteamUser.ReadVoiceData(stream);
             stream.Position = 0;
 

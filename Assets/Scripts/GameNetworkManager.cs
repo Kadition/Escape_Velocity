@@ -76,10 +76,7 @@ public class GameNetworkManager : MonoBehaviour
         NetworkManager.Singleton.OnServerStarted -= Singleton_OnServerStarted;
         NetworkManager.Singleton.OnClientConnectedCallback -= Singleton_OnClientConnectedCallback;
         NetworkManager.Singleton.OnClientDisconnectCallback -= Singleton_OnClientDisconnectCallback;
-    }
 
-    void OnApplicationQuit()
-    {
         Disconnected();
     }
 
@@ -161,6 +158,10 @@ public class GameNetworkManager : MonoBehaviour
         NetworkManager.Singleton.StartHost();
 
         currentLobby = await SteamMatchmaking.CreateLobbyAsync(_maxMembers);
+
+        VoiceRelayMono.instance.OnLobbyCreate();
+
+        VoiceNetworking.instance.spawnMeInCoachRpc(NetworkManager.Singleton.LocalClientId);
     }
 
     public void StartClient(SteamId _sId)
@@ -174,10 +175,18 @@ public class GameNetworkManager : MonoBehaviour
         {
             Debug.Log("Client has started");
         }
+
+        VoiceRelayMono.instance.OnLobbyCreate();
+
+        VoiceNetworking.instance.spawnMeInCoachRpc(NetworkManager.Singleton.LocalClientId);
+
+        VoiceNetworking.instance.updateVocalDictionaryRpc();
     }
 
     public void Disconnected()
     {
+        VoiceNetworking.instance.removeMeFromVocalDictionaryRpc(SteamClient.SteamId);
+
         currentLobby?.Leave();
 
         currentLobby = null;
