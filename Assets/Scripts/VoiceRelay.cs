@@ -24,7 +24,7 @@ public class VoiceRelayMono : MonoBehaviour
 
     public void ConnectToRelay(ulong hostSteamID)
     {
-        // TODO - not host
+        // TODO - all shhould do this, even host
         if (true)
         {
             connectionManager = SteamNetworkingSockets.ConnectRelay<ConnectionManager>(hostSteamID);
@@ -41,14 +41,23 @@ public class VoiceRelayMono : MonoBehaviour
             stream.Position = 0;
 
         }
-        
-
     }
 
     // TODO - or on returning to lobby
     void OnDestroy()
     {
         SteamUser.VoiceRecord = false;
+    }
+
+    public void sendIt(byte[] compressed, int bytesWritten)
+    {
+        unsafe
+        {
+            fixed (byte* ptr = compressed)
+            {
+                connectionManager.Connection.SendMessage((IntPtr)ptr, bytesWritten, SendType.Unreliable);
+            }
+        }
     }
 }
 
@@ -60,19 +69,7 @@ public class VoiceRelayCreate : SocketManager
 
     private Queue<byte[]> voiceQueue = new Queue<byte[]>();
 
-    public void sendIt(byte[] compressed, int bytesWritten)
-    {
-        foreach (Connection connection in socketManager.Connected)
-        {
-            unsafe
-            {
-                fixed (byte* ptr = compressed)
-                {
-                    connection.SendMessage((IntPtr)ptr, bytesWritten, SendType.Unreliable);
-                }
-            }
-        }
-    }
+
 
     public void Start()
     {
@@ -93,7 +90,7 @@ public class VoiceRelayCreate : SocketManager
     public override void OnConnected(Connection connection, ConnectionInfo data)
     {
         base.OnConnected(connection, data);
-        Debug.Log($"{data.Identity} has joined the game");
+        Debug.Log($"{data.Identity} has joined the relay");
     }
 
     public override void OnDisconnected(Connection connection, ConnectionInfo data)
@@ -107,42 +104,29 @@ public class VoiceRelayCreate : SocketManager
         base.OnMessage(connection, identity, data, size, messageNum, recvTime, channel);
         Debug.Log($"We got a message from {identity}!");
 
-        // Send it right back
-        connection.SendMessage(data, size, SendType.Reliable);
+        foreach (Connection connectionMade in socketManager.Connected)
+        {
+            if (connectionMade == connection)
+            {
+                continue;
+            }
+
+            connectionMade.SendMessage(data, size, SendType.Unreliable);
+        }
     }
-
-    // void Update()
-    // {
-    //     // Capture voice data (replace with your actual voice capture logic)
-    //     byte[] voiceData = CaptureVoiceData();
-    //     if (voiceData != null && voiceData.Length > 0)
-    //     {
-    //         // Send voice data to remote client
-    //         socket.Send(remoteSteamId, voiceData, SendType.Unreliable);
-    //     }
-
-    //     // Play received voice data
-    //     while (voiceQueue.Count > 0)
-    //     {
-    //         byte[] data = voiceQueue.Dequeue();
-    //         PlayVoiceData(data);
-    //     }
-    // }
-
-    // private void OnSocketMessage(SocketMessage msg)
-    // {
-    //     // Received voice data from remote client
-    //     voiceQueue.Enqueue(msg.Data);
-    // }
-
-    // private byte[] CaptureVoiceData()
-    // {
-    //     // TODO: Implement actual microphone capture and encoding (e.g., Opus)
-    //     return null;
-    // }
-
-    // private void PlayVoiceData(byte[] data)
-    // {
-    //     // TODO: Implement actual voice playback and decoding
-    // }
 }
+
+
+    // public void sendIt(byte[] compressed, int bytesWritten)
+    // {
+    //     foreach (Connection connection in socketManager.Connected)
+    //     {
+    //         unsafe
+    //         {
+    //             fixed (byte* ptr = compressed)
+    //             {
+    //                 connection.SendMessage((IntPtr)ptr, bytesWritten, SendType.Unreliable);
+    //             }
+    //         }
+    //     }
+    // }
