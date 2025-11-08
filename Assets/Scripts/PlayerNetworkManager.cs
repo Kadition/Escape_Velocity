@@ -58,7 +58,12 @@ public class PlayerNetworkManager : NetworkBehaviour
     {
         if (VoiceRelay.instance.vocalAudioPlayers.ContainsKey(steamID))
         {
+            Debug.Log("player exist in voice data");
             VoiceRelay.instance.vocalAudioPlayers[steamID].playAudio(data, size);
+        }
+        else
+        {
+            Debug.Log("player doesnt exist in voice data");
         }
     }
 }

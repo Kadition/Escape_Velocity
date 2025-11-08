@@ -184,7 +184,12 @@ public class GameNetworkManager : MonoBehaviour
 
     IEnumerator clientWait()
     {
-        yield return new WaitForSeconds(1);
+        if(NetworkManager.Singleton == null || !NetworkManager.Singleton.IsListening)
+        {
+            yield return null;
+        }
+        
+        yield return new WaitForSeconds(5);
 
         PlayerNetworkManager.instance.spawnMeInCoachRpc(NetworkManager.Singleton.LocalClientId, SteamClient.SteamId);
     }

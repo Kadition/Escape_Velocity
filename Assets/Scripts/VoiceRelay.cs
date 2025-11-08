@@ -40,7 +40,7 @@ public class VoiceRelay : MonoBehaviour
 
     void Update()
     {
-        if (SteamUser.HasVoiceData && NetworkManager.Singleton != null && NetworkManager.Singleton.IsListening)
+        if (SteamUser.HasVoiceData && NetworkManager.Singleton != null && NetworkManager.Singleton.IsListening && PlayerNetworkManager.instance != null)
         {
             Debug.Log("has voice data");
             int compressedWritten = SteamUser.ReadVoiceData(stream);
