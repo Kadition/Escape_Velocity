@@ -18,5 +18,19 @@ public class PlayerManager : NetworkBehaviour
     public void updateIDRpc(ulong newSteamID)
     {
         steam_id = newSteamID;
+        Debug.Log("happened " + newSteamID);
+
+        VoiceRelay.instance.vocalAudioPlayers.Clear();
+
+        foreach (GameObject player in GameObject.FindGameObjectsWithTag("Player"))
+        {
+            VocalAudioPlayer vocalAudioPlayer = player.GetComponent<VocalAudioPlayer>();
+
+            ulong steamiD = player.GetComponent<PlayerManager>().steam_id;
+
+            Debug.Log("steam id: " + steamiD);
+
+            VoiceRelay.instance.vocalAudioPlayers.Add(steamiD, vocalAudioPlayer);
+        }
     }
 }
