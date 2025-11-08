@@ -159,8 +159,6 @@ public class GameNetworkManager : MonoBehaviour
 
         currentLobby = await SteamMatchmaking.CreateLobbyAsync(_maxMembers);
 
-        VoiceRelayMono.instance.OnLobbyCreate();
-
         VoiceNetworking.instance.spawnMeInCoachRpc(NetworkManager.Singleton.LocalClientId);
     }
 
@@ -175,8 +173,6 @@ public class GameNetworkManager : MonoBehaviour
         {
             Debug.Log("Client has started");
         }
-
-        VoiceRelayMono.instance.OnLobbyCreate();
 
         VoiceNetworking.instance.spawnMeInCoachRpc(NetworkManager.Singleton.LocalClientId);
 

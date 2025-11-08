@@ -39,7 +39,7 @@ public class VocalAudioPlayer : MonoBehaviour
         output.Close();
     }
 
-    public void PlayAudio(byte[] compressed, int bytesWritten)
+    public void playAudio(byte[] compressed, int bytesWritten)
     {
         input.Write(compressed, 0, bytesWritten);
         input.Position = 0;

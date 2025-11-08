@@ -25,7 +25,7 @@ public class VoiceNetworking : NetworkBehaviour
     [Rpc(SendTo.Everyone)]
     public void updateVocalDictionaryRpc()
     {
-        VoiceRelayMono.instance.vocalAudioPlayers.Clear();
+        VoiceRelay.instance.vocalAudioPlayers.Clear();
 
         foreach (GameObject player in GameObject.FindGameObjectsWithTag("Player"))
         {
@@ -33,14 +33,14 @@ public class VoiceNetworking : NetworkBehaviour
 
             ulong steamiD = player.GetComponent<PlayerManager>().steam_id;
 
-            VoiceRelayMono.instance.vocalAudioPlayers.Add(steamiD, vocalAudioPlayer);
+            VoiceRelay.instance.vocalAudioPlayers.Add(steamiD, vocalAudioPlayer);
         }
     }
 
     [Rpc(SendTo.Everyone)]
     public void removeMeFromVocalDictionaryRpc(ulong steamID)
     {
-        VoiceRelayMono.instance.vocalAudioPlayers.Remove(steamID);
+        VoiceRelay.instance.vocalAudioPlayers.Remove(steamID);
     }
 
     [Rpc(SendTo.Server)]
@@ -49,5 +49,11 @@ public class VoiceNetworking : NetworkBehaviour
         GameObject playerInstance = Instantiate(playerPrefab);
 
         playerInstance.GetComponent<NetworkObject>().SpawnWithOwnership(id);
+    }
+
+    [Rpc(SendTo.NotMe)]
+    public void voiceDataRpc(byte[] data, ulong steamID, int size)
+    {
+        VoiceRelay.instance.vocalAudioPlayers[steamID].playAudio(data, size);
     }
 }
