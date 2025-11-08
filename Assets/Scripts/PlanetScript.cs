@@ -1,7 +1,7 @@
 // PlanetScript.cs
-using System;
-using System.Diagnostics.Contracts;
 using UnityEngine;
+using System.Collections.Generic;
+
 
 public class PlanetScript : MonoBehaviour
 {
@@ -14,6 +14,10 @@ public class PlanetScript : MonoBehaviour
     private PlayerController pc;
 
     private float visualRadius;
+    public GameObject[] rocks;
+    private List<Vector3> placedDirections = new List<Vector3>();
+
+    public float minAngleBetweenItems = 10;
 
     void Start()
     {
@@ -22,7 +26,53 @@ public class PlanetScript : MonoBehaviour
         pc = player.GetComponent<PlayerController>();
 
         visualRadius = transform.localScale.x * 0.5f;
+        for (int i = 0; i < 30;i++){
+            SpawnRock();
+        }
     }
+
+    void SpawnRock()
+    {
+        Vector3 direction = Vector3.zero;
+        bool valid = false;
+
+        // Try up to 30 attempts to find a spaced direction
+        for (int attempts = 0; attempts < 30; attempts++)
+        {
+            direction = Random.onUnitSphere;
+
+            // Check against previously placed rocks
+            valid = true;
+            foreach (Vector3 placed in placedDirections)
+            {
+                float angle = Vector3.Angle(direction, placed);
+                if (angle < minAngleBetweenItems)
+                {
+                    valid = false;
+                    break;
+                }
+            }
+
+            if (valid)
+                break;
+        }
+
+        if (!valid)
+            return; // No valid spot found, skip
+
+        placedDirections.Add(direction);
+
+        Vector3 position = transform.position + direction * visualRadius - (direction * 0.2f);
+
+        GameObject prefab = rocks[Random.Range(0, rocks.Length)];
+        GameObject rock = Instantiate(prefab, position, Quaternion.identity);
+
+        rock.transform.up = direction;
+
+        float scale = Random.Range(4f, 8f);
+        rock.transform.localScale *= scale;
+    }
+
 
     void FixedUpdate()
     {
