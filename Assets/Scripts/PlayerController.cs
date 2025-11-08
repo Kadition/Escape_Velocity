@@ -10,7 +10,7 @@ public class PlayerController : MonoBehaviour
     public float moveForce = 20f;
     public float jumpForce = 6f;
 
-    public float flipSpeed = 0.5f;
+    public float flipSpeed = 10f;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -62,6 +62,11 @@ public class PlayerController : MonoBehaviour
             jumpPressed = true;
     }
 
+    public Vector3 CurrentGravityDirection
+    {
+        get { return gravityVector.normalized; }
+    }
+
     void FixedUpdate()
     {
         if (!gravityUpdated)
@@ -73,11 +78,16 @@ public class PlayerController : MonoBehaviour
 
         Vector3 gravityDirection = gravityVector.normalized;
 
-        // Rotate player so that their booty cheeks face the floor
-        // Quaternion alignToGravity = Quaternion.FromToRotation(transform.up, gravityDirection);
-        // transform.rotation = alignToGravity * transform.rotation;
-        Quaternion targetRot = Quaternion.FromToRotation(transform.up, -gravityDirection.normalized) * transform.rotation;
+        Vector3 up = -gravityDirection.normalized;
+
+        // Recompute a forward direction that is perpendicular to up
+        Vector3 forward = Vector3.ProjectOnPlane(transform.forward, up).normalized;
+
+        Quaternion targetRot = Quaternion.LookRotation(forward, up);
+
+        // Smooth rotate toward that absolute orientation
         transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRot, 180f * Time.deltaTime * flipSpeed);
+
 
 
         float x = inputX;
