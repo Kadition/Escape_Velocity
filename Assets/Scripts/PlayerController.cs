@@ -1,6 +1,7 @@
+using Unity.Netcode;
 using UnityEngine;
 
-public class PlayerController : MonoBehaviour
+public class PlayerController : NetworkBehaviour
 {
     public bool grounded;
     public Vector3 NormGravity = new Vector3(0f, -9.81f, 0f);
@@ -15,6 +16,11 @@ public class PlayerController : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        if(!IsOwner)
+        {
+            return;
+        }
+
         grounded = false;
         gravityVector = NormGravity;
         gravityUpdated = false;
@@ -23,6 +29,12 @@ public class PlayerController : MonoBehaviour
     }
 
     public void updateGravity(Vector3 g){
+        
+        if (!IsOwner)
+        {
+            return;
+        }
+        
         gravityVector = g;
         gravityUpdated = true;
     }
@@ -30,6 +42,11 @@ public class PlayerController : MonoBehaviour
 
     void OnCollisionStay(Collision collision)
     {
+        if (!IsOwner)
+        {
+            return;
+        }
+        
         grounded = false;
 
         foreach (var contact in collision.contacts)
@@ -45,6 +62,11 @@ public class PlayerController : MonoBehaviour
 
     void OnCollisionExit(Collision collision)
     {
+        if (!IsOwner)
+        {
+            return;
+        }
+        
         grounded = false;
     }
 
@@ -55,6 +77,11 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
+        if(!IsOwner)
+        {
+            return;
+        }
+
         inputX = Input.GetAxisRaw("Horizontal");
         inputZ = Input.GetAxisRaw("Vertical");
 
@@ -62,19 +89,17 @@ public class PlayerController : MonoBehaviour
             jumpPressed = true;
     }
 
-    public Vector3 CurrentGravityDirection
-    {
-        get { return gravityVector.normalized; }
-    }
-
     void FixedUpdate()
     {
+        if(!IsOwner)
+        {
+            return;
+        }
+
         if (!gravityUpdated)
         {
             gravityVector = NormGravity;
         }
-
-        
 
         Vector3 gravityDirection = gravityVector.normalized;
 
@@ -87,8 +112,6 @@ public class PlayerController : MonoBehaviour
 
         // Smooth rotate toward that absolute orientation
         transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRot, 180f * Time.deltaTime * flipSpeed);
-
-
 
         float x = inputX;
         float z = inputZ;
