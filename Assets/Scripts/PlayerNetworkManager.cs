@@ -5,6 +5,7 @@ using UnityEngine;
 public class PlayerNetworkManager : NetworkBehaviour
 {
     public static PlayerNetworkManager instance;
+    public Vector3 spawnLocation = new Vector3(0f, 80f, 0f);
     [SerializeField] private GameObject playerPrefab;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
 
@@ -49,6 +50,7 @@ public class PlayerNetworkManager : NetworkBehaviour
         Debug.Log(id + " " + steamID);
 
         GameObject playerInstance = Instantiate(playerPrefab);
+        playerInstance.transform.position = spawnLocation;
 
         playerInstance.GetComponent<NetworkObject>().SpawnWithOwnership(id);
     }

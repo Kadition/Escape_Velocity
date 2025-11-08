@@ -5,7 +5,7 @@ using UnityEngine.InputSystem;
 public class PlayerController : NetworkBehaviour
 {
     public bool grounded;
-    public Vector3 NormGravity = new Vector3(0f, -9.81f, 0f);
+    public Vector3 NormGravity = new Vector3(0f, 0.0000001f, 0f);
     public Vector3 gravityVector;
     public bool gravityUpdated;
     [SerializeField] private Rigidbody rig;
@@ -13,6 +13,8 @@ public class PlayerController : NetworkBehaviour
     public float jumpForce = 6f;
 
     public float flipSpeed = 10f;
+
+    public Vector3 lastGravityDir;
 
     GameObject[] planetList;
 
@@ -28,6 +30,7 @@ public class PlayerController : NetworkBehaviour
         gravityVector = NormGravity;
         gravityUpdated = false;
         rig.useGravity = false;
+        lastGravityDir = NormGravity.normalized;
 
         planetList = GameObject.FindGameObjectsWithTag("Planet");
     }
@@ -115,23 +118,26 @@ public class PlayerController : NetworkBehaviour
                 updateGravity(g);
             }
         }
-
+        Vector3 gravityDirection;
         if (!gravityUpdated)
         {
             gravityVector = NormGravity;
+            gravityDirection = lastGravityDir;
         }
+        else
+        {
+            gravityDirection = gravityVector.normalized;
 
-        Vector3 gravityDirection = gravityVector.normalized;
+            Vector3 up = -gravityDirection.normalized;
 
-        Vector3 up = -gravityDirection.normalized;
+            // Recompute a forward direction that is perpendicular to up
+            Vector3 forward = Vector3.ProjectOnPlane(transform.forward, up).normalized;
 
-        // Recompute a forward direction that is perpendicular to up
-        Vector3 forward = Vector3.ProjectOnPlane(transform.forward, up).normalized;
+            Quaternion targetRot = Quaternion.LookRotation(forward, up);
 
-        Quaternion targetRot = Quaternion.LookRotation(forward, up);
-
-        // Smooth rotate toward that absolute orientation
-        transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRot, 180f * Time.deltaTime * flipSpeed);
+            // Smooth rotate toward that absolute orientation
+            transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRot, 180f * Time.deltaTime * flipSpeed);
+        }
 
         float x = inputX;
         float z = inputZ;
@@ -146,7 +152,7 @@ public class PlayerController : NetworkBehaviour
         rig.AddForce(gravityVector, ForceMode.Force);
 
         // Jump against gravity
-        if (jumpPressed && grounded)
+        if (jumpPressed)// && grounded)
         {
             rig.AddForce(-gravityDirection * jumpForce, ForceMode.Impulse);
             Debug.Log("Jumped!");
@@ -157,5 +163,6 @@ public class PlayerController : NetworkBehaviour
 
         jumpPressed = false;
         gravityUpdated = false;
+        lastGravityDir = gravityDirection;
     }
 }
