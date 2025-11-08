@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -12,7 +13,7 @@ public class ConnectPoints : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        ConnectRopeEnds();
+        StartCoroutine(ConnectRopeEnds());
     }
 
     // Update is called once per frame
@@ -20,7 +21,7 @@ public class ConnectPoints : MonoBehaviour
     {
     }
 
-    public void ConnectRopeEnds()
+    public IEnumerator ConnectRopeEnds()
     {
         /*nearEnd = transform.GetChild(1).gameObject;
         farEnd = transform.GetChild(0).gameObject;
@@ -88,12 +89,10 @@ public class ConnectPoints : MonoBehaviour
             // advance chain
             prevRb = inst.GetComponent<Rigidbody>();
             currentOffset += segmentLength;
+            yield return new WaitForEndOfFrame();
 
         }
-        
-        farEnd.GetComponent<HingeJoint>().connectedBody = prevRb;
-        
-        
 
+        farEnd.GetComponent<HingeJoint>().connectedBody = prevRb;
     }
 }
