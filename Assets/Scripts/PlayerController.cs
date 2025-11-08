@@ -13,10 +13,12 @@ public class PlayerController : NetworkBehaviour
 
     public float flipSpeed = 10f;
 
+    GameObject[] planetList;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        if(!IsOwner)
+        if (!IsOwner)
         {
             return;
         }
@@ -26,6 +28,8 @@ public class PlayerController : NetworkBehaviour
         gravityUpdated = false;
         rig = GetComponent<Rigidbody>();
         rig.useGravity = false;
+
+        planetList = GameObject.FindGameObjectsWithTag("Planet");
     }
 
     public void updateGravity(Vector3 g){
@@ -91,9 +95,25 @@ public class PlayerController : NetworkBehaviour
 
     void FixedUpdate()
     {
-        if(!IsOwner)
+        if (!IsOwner)
         {
             return;
+        }
+        
+        foreach (GameObject planet in planetList)
+        {
+            PlanetScript planetScript = planet.GetComponent<PlanetScript>();
+
+            float distance = Vector3.Distance(transform.position, planet.transform.position);
+
+            if(distance <= planetScript.visualRadius * planetScript.affectRadiusFactor)
+            {
+                // Make a new vector that is a rotated version of gravityVector
+
+                Vector3 g = (planet.transform.position - transform.position).normalized * Mathf.Lerp(planetScript.maxAcc, planetScript.maxAcc*planetScript.dropOff, (distance - planetScript.visualRadius) / (planetScript.visualRadius * planetScript.affectRadiusFactor));
+
+                updateGravity(g);
+            }
         }
 
         if (!gravityUpdated)
