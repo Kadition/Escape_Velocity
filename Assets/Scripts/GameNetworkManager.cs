@@ -3,6 +3,7 @@ using Unity.Netcode;
 using Steamworks;
 using Steamworks.Data;
 using Netcode.Transports.Facepunch;
+using System.Collections;
 
 public class GameNetworkManager : MonoBehaviour
 {
@@ -177,6 +178,13 @@ public class GameNetworkManager : MonoBehaviour
         }
 
         SteamUser.VoiceRecord = true;
+
+        StartCoroutine(clientWait());
+    }
+
+    IEnumerator clientWait()
+    {
+        yield return new WaitForSeconds(1);
 
         VoiceNetworking.instance.spawnMeInCoachRpc(NetworkManager.Singleton.LocalClientId, SteamClient.SteamId);
     }

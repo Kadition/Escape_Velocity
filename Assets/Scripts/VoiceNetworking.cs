@@ -48,12 +48,14 @@ public class VoiceNetworking : NetworkBehaviour
     [Rpc(SendTo.Server)]
     public void spawnMeInCoachRpc(ulong id, ulong steamID)
     {
-        GameObject playerInstance = Instantiate(playerPrefab);
+        Debug.Log(id + " " + steamID);
 
-        playerInstance.GetComponent<PlayerManager>().steam_id = steamID;
+        GameObject playerInstance = Instantiate(playerPrefab);
 
         playerInstance.GetComponent<NetworkObject>().SpawnWithOwnership(id);
     }
+
+    // public void spawnMeInCoachRpc()
 
     // TODO - later do not me
     [Rpc(SendTo.Everyone)]
