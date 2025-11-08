@@ -1,7 +1,5 @@
 using Unity.Netcode;
 using UnityEngine;
-using Steamworks;
-using Steamworks.Data;
 
 
 public class PlayerNetworkManager : NetworkBehaviour
@@ -55,10 +53,7 @@ public class PlayerNetworkManager : NetworkBehaviour
         playerInstance.GetComponent<NetworkObject>().SpawnWithOwnership(id);
     }
 
-    // public void spawnMeInCoachRpc()
-
-    // TODO - later do not me
-    [Rpc(SendTo.Everyone)]
+    [Rpc(SendTo.NotMe)]
     public void voiceDataRpc(byte[] data, ulong steamID, int size)
     {
         if (VoiceRelay.instance.vocalAudioPlayers.ContainsKey(steamID))
