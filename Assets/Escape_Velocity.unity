@@ -139,6 +139,7 @@ GameObject:
   - component: {fileID: 60619255}
   - component: {fileID: 60619254}
   - component: {fileID: 60619260}
+  - component: {fileID: 60619261}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -277,7 +278,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
-  m_Children: []
+  m_Children:
+  - {fileID: 985242089}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &60619260
@@ -297,6 +299,21 @@ MonoBehaviour:
   fadeSpeed: 0.005
   respawnPoint: {x: 0, y: 1, z: 0}
   respawnDelay: 2
+--- !u!114 &60619261
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 60619253}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a343cfbed23cfd042b713efa6b08968b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::OrientToSphere
+  planetPos: {x: 0, y: 0, z: 0}
+  playerToPlanetVector: {x: 0, y: 0, z: 0}
+  playerCenter: {fileID: 985242088}
 --- !u!1 &146493744
 GameObject:
   m_ObjectHideFlags: 0
@@ -508,6 +525,37 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!1 &985242088
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 985242089}
+  m_Layer: 0
+  m_Name: Player Center
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &985242089
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 985242088}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 60619259}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1308102824
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -758,12 +806,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 1445527507}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f3b0c02a5b33382458d07d75bf4b2586, type: 3}
+  m_Script: {fileID: 11500000, guid: a343cfbed23cfd042b713efa6b08968b, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::SphericalCameraMovement
+  m_EditorClassIdentifier: Assembly-CSharp::OrientToSphere
   planetPos: {x: 0, y: 0, z: 0}
   playerToPlanetVector: {x: 0, y: 0, z: 0}
-  player: {fileID: 60619253}
+  playerCenter: {fileID: 985242088}
 --- !u!1 &1490739516
 GameObject:
   m_ObjectHideFlags: 0
