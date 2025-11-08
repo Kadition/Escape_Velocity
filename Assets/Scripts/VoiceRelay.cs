@@ -1,9 +1,7 @@
 using System;
-using System.Collections.Generic;
 using UnityEngine;
 using Steamworks;
 using Steamworks.Data;
-using Netcode.Transports.Facepunch;
 using System.IO;
 
 public class VoiceRelayMono : MonoBehaviour
@@ -40,6 +38,13 @@ public class VoiceRelayMono : MonoBehaviour
             int compressedWritten = SteamUser.ReadVoiceData(stream);
             stream.Position = 0;
 
+            unsafe
+            {
+                fixed (byte* ptr = stream.GetBuffer())
+                {
+                    connectionManager.Connection.SendMessage((IntPtr)ptr, compressedWritten, SendType.Unreliable);
+                }
+            }
         }
     }
 
@@ -47,29 +52,24 @@ public class VoiceRelayMono : MonoBehaviour
     void OnDestroy()
     {
         SteamUser.VoiceRecord = false;
+        connectionManager.Connection.Close();
+        VoiceRelayCreate.socketManager.Close();
+        
+        // dont do these on menu, and maybe start recording voice even in menu lol
+        stream.Close();
+        input.Close();
+        output.Close();
     }
+}
 
-    public void sendIt(byte[] compressed, int bytesWritten)
-    {
-        unsafe
-        {
-            fixed (byte* ptr = compressed)
-            {
-                connectionManager.Connection.SendMessage((IntPtr)ptr, bytesWritten, SendType.Unreliable);
-            }
-        }
-    }
+public class VoiceRelayConnect : ConnectionManager
+{
+    ConnectionManager connectionManager
 }
 
 public class VoiceRelayCreate : SocketManager
 {
-    public SocketManager socketManager;
-    public Socket socket;
-    public uint remoteSteamId;
-
-    private Queue<byte[]> voiceQueue = new Queue<byte[]>();
-
-
+    public static SocketManager socketManager;
 
     public void Start()
     {
@@ -113,6 +113,11 @@ public class VoiceRelayCreate : SocketManager
 
             connectionMade.SendMessage(data, size, SendType.Unreliable);
         }
+    }
+
+    void OnDestroy()
+    {
+        socketManager.Close();
     }
 }
 
