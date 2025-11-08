@@ -9,8 +9,10 @@ public class PlayerManager : NetworkBehaviour
 
     void Start()
     {
+        Debug.Log("satrtatrar2");
         if (IsOwner)
         {
+            Debug.Log("satrtatrar");
             updateIDRpc(SteamClient.SteamId);
         }
     }
