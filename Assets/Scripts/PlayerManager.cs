@@ -12,6 +12,8 @@ public class PlayerManager : NetworkBehaviour
 
     GameObject attachedPlayer = null;
 
+    [SerializeField] Rigidbody rb;
+
     void Start()
     {
         Debug.Log("satrtatrar2");
@@ -81,7 +83,7 @@ public class PlayerManager : NetworkBehaviour
         {
             if (holdingPlayer)
             {
-                OnReleasePlayer();
+                OnReleasePlayerRpc();
             }
             else
             {
@@ -94,7 +96,7 @@ public class PlayerManager : NetworkBehaviour
 
                     if (Vector3.Distance(player.transform.position, transform.position) < 3)
                     {
-                        OnClickPlayer(player.GetComponent<PlayerManager>().steam_id);
+                        OnClickPlayerRpc(player.GetComponent<PlayerManager>().steam_id);
                         break;
                     }
                 }
@@ -103,7 +105,7 @@ public class PlayerManager : NetworkBehaviour
     }
 
     [Rpc(SendTo.Everyone)]
-    public void OnClickPlayer(ulong steamID)
+    public void OnClickPlayerRpc(ulong steamID)
     {
         attachedPlayer = null;
 
@@ -129,11 +131,13 @@ public class PlayerManager : NetworkBehaviour
 
         springJointMaker.attached = true;
 
+        rb.constraints = RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ;
+
         holdingPlayer = true;
     }
     
     [Rpc(SendTo.Everyone)]
-    public void OnReleasePlayer()
+    public void OnReleasePlayerRpc()
     {
         attachedPlayer = null;
 
@@ -144,6 +148,10 @@ public class PlayerManager : NetworkBehaviour
         springJointMaker.rope.SetActive(false);
 
         holdingPlayer = false;
+
+        rb.constraints = RigidbodyConstraints.None;
+
+        rb.constraints = RigidbodyConstraints.FreezeRotation;
 
         Destroy(GetComponent<SpringJoint>());
     }

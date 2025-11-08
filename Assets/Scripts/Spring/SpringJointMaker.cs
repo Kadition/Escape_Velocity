@@ -9,6 +9,7 @@ public class SpringJointMaker : MonoBehaviour
 
     public GameObject rope;
 
+    [HideInInspector]
     public Transform connectedPlayer;
 
     public bool attached = false;

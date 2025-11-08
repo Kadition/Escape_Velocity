@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 7046516072647828173}
   - component: {fileID: 7967682360663599344}
   - component: {fileID: 5011984353369403392}
-  - component: {fileID: 228098551410527889}
   m_Layer: 0
   m_Name: Cylinder
   m_TagString: Untagged
@@ -28,7 +27,7 @@ Transform:
   m_GameObject: {fileID: 5211240065708352562}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.44574, y: 0.24624002, z: 0.22653}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.05, y: 0.72, z: 0.05}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -90,29 +89,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!136 &228098551410527889
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5211240065708352562}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.5000001
-  m_Height: 2
-  m_Direction: 1
-  m_Center: {x: 0.000000059604645, y: 0, z: -0.00000008940697}
 --- !u!1 &7109000587814895121
 GameObject:
   m_ObjectHideFlags: 0
@@ -178,6 +154,7 @@ GameObject:
   - component: {fileID: -5770681846923177648}
   - component: {fileID: 6399910444277193415}
   - component: {fileID: 2872625917057936138}
+  - component: {fileID: 4446998762717341229}
   - component: {fileID: 7941311074209691963}
   - component: {fileID: 1639936318760307021}
   - component: {fileID: 5429414347932418297}
@@ -298,7 +275,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 1326372182
+  GlobalObjectIdHash: 3403041415
   InScenePlacedSourceGlobalObjectIdHash: 0
   DeferredDespawnTick: 0
   Ownership: 1
@@ -451,6 +428,23 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerManager
   ShowTopMostFoldoutHeaderGroup: 1
   steam_id: 0
+  springJointMaker: {fileID: 4446998762717341229}
+  rb: {fileID: 223971613767819608}
+--- !u!114 &4446998762717341229
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7183096211676564755}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6e5afb70f62da4c42b0140670246000d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SpringJointMaker
+  rope: {fileID: 5211240065708352562}
+  connectedPlayer: {fileID: 0}
+  attached: 0
 --- !u!114 &7941311074209691963
 MonoBehaviour:
   m_ObjectHideFlags: 0
