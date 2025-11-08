@@ -33,6 +33,8 @@ public class VoiceNetworking : NetworkBehaviour
 
             ulong steamiD = player.GetComponent<PlayerManager>().steam_id;
 
+            Debug.Log("steam id: " + steamiD);
+
             VoiceRelay.instance.vocalAudioPlayers.Add(steamiD, vocalAudioPlayer);
         }
     }
@@ -44,14 +46,17 @@ public class VoiceNetworking : NetworkBehaviour
     }
 
     [Rpc(SendTo.Server)]
-    public void spawnMeInCoachRpc(ulong id)
+    public void spawnMeInCoachRpc(ulong id, ulong steamID)
     {
         GameObject playerInstance = Instantiate(playerPrefab);
+
+        playerInstance.GetComponent<PlayerManager>().steam_id = steamID;
 
         playerInstance.GetComponent<NetworkObject>().SpawnWithOwnership(id);
     }
 
-    [Rpc(SendTo.NotMe)]
+    // TODO - later do not me
+    [Rpc(SendTo.Everyone)]
     public void voiceDataRpc(byte[] data, ulong steamID, int size)
     {
         VoiceRelay.instance.vocalAudioPlayers[steamID].playAudio(data, size);

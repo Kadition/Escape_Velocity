@@ -159,7 +159,11 @@ public class GameNetworkManager : MonoBehaviour
 
         currentLobby = await SteamMatchmaking.CreateLobbyAsync(_maxMembers);
 
-        VoiceNetworking.instance.spawnMeInCoachRpc(NetworkManager.Singleton.LocalClientId);
+        SteamUser.VoiceRecord = true;
+
+        VoiceNetworking.instance.spawnMeInCoachRpc(NetworkManager.Singleton.LocalClientId, SteamClient.SteamId);
+
+        VoiceNetworking.instance.updateVocalDictionaryRpc();
     }
 
     public void StartClient(SteamId _sId)
@@ -174,7 +178,9 @@ public class GameNetworkManager : MonoBehaviour
             Debug.Log("Client has started");
         }
 
-        VoiceNetworking.instance.spawnMeInCoachRpc(NetworkManager.Singleton.LocalClientId);
+        SteamUser.VoiceRecord = true;
+
+        VoiceNetworking.instance.spawnMeInCoachRpc(NetworkManager.Singleton.LocalClientId, SteamClient.SteamId);
 
         VoiceNetworking.instance.updateVocalDictionaryRpc();
     }

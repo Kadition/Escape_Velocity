@@ -35,11 +35,10 @@ public class VoiceRelay : MonoBehaviour
 
     void Start()
     {
-        SteamUser.VoiceRecord = true;
         stream = new MemoryStream();
     }
 
-    void Update()
+    void LateUpdate()
     {
         if (SteamUser.HasVoiceData)
         {
