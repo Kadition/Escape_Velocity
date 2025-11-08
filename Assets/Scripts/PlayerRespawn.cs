@@ -6,6 +6,7 @@ using UnityEngine.UI;
 // This script handles player respawning at a designated point when the Backspace key is pressed
 public class PlayerRespawn : MonoBehaviour
 {
+    [SerializeField] private AudioClip wilhelmScream;
     [SerializeField] Canvas blackCanvas;
     [SerializeField] Image blackImage;
     [SerializeField] private float fadeSpeed = 0.1f;
@@ -49,7 +50,7 @@ public class PlayerRespawn : MonoBehaviour
         }
         // Respawn player at spawn point
         transform.position = respawnPoint;
-        // Hold black for a moment
+        SoundFXManager.instance.PlaySoundFXCLip(wilhelmScream, transform, 0.5f);        // Hold black for a moment
         yield return new WaitForSeconds(2f);
         
         // Fade back to transparent
