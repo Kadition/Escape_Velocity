@@ -21,7 +21,6 @@ public class PlayerController : NetworkBehaviour
     {
         if (!IsOwner)
         {
-            Debug.Log("AAAAAAAAAA");
             return;
         }
 
@@ -98,12 +97,9 @@ public class PlayerController : NetworkBehaviour
     {
         if (!IsOwner)
         {
-            Debug.Log("AAAAAAAAAA 2");
             return;
         }
 
-        Debug.Log("AAAAAAAAAA 3");
-        
         foreach (GameObject planet in planetList)
         {
             PlanetScript planetScript = planet.GetComponent<PlanetScript>();

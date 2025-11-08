@@ -1,12 +1,18 @@
+using Unity.Netcode;
 using UnityEngine;
 
-public class CameraLook : MonoBehaviour
+public class CameraLook : NetworkBehaviour
 {
     public float mouseSensitivity = 300f;
     float pitch = 0f;
 
     void Update()
     {
+        if(!IsOwner)
+        {
+            return;
+        }
+
         float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity * Time.deltaTime;
 
         pitch -= mouseY;
