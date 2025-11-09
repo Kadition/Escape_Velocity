@@ -111,7 +111,7 @@ public class PlayerManager : NetworkBehaviour
 
                 gameObject.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeRotation;
 
-                OnReleasePlayerRpc(heldPlayerId, transform.position + transform.forward * 1.5f, transform.forward, connectedRigidbody.linearVelocity.magnitude);
+                OnReleasePlayerRpc(heldPlayerId, transform.position + Camera.main.transform.forward * 1.5f, Camera.main.transform.forward, connectedRigidbody.linearVelocity.magnitude);
             }
             else
             {
