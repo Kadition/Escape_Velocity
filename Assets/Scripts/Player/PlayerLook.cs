@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class PlayerLook : NetworkBehaviour
 {
-    public float mouseSensitivity = 300f;
+    public const float mouseSensitivity = 300f;
     [SerializeField] private PlayerController player;
 
     void Start()
@@ -12,7 +12,7 @@ public class PlayerLook : NetworkBehaviour
         {
             return;
         }
-        
+
         Cursor.lockState = CursorLockMode.Locked; 
         Cursor.visible = false;
     }
