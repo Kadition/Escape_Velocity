@@ -223,7 +223,7 @@ public class PlayerController : NetworkBehaviour
 
             if(rig.linearVelocity.magnitude > maxGroundedVelocity){
                 if(savingSlam){
-                    rig.linearVelocity = rig.linearVelocity * (maxGroundedVelocity / rig.linearVelocity.magnitude);
+                    rig.linearVelocity = Vector3.zero; //rig.linearVelocity * (maxGroundedVelocity / rig.linearVelocity.magnitude);
                 }
             }
             savingSlam = false;
