@@ -22,11 +22,13 @@ public class PlayerManager : NetworkBehaviour
     // [SerializeField] Rigidbody connectedRigidbody;
 
     // ! use this for what the other person should copy
+    [HideInInspector]
     public Transform connectedPosition;
 
+    [HideInInspector]
     public Rigidbody connectedRigidbody;
 
-    [SerializeField] GameObject playerModel;
+    // [SerializeField] GameObject playerModel;
 
     void Start()
     {
@@ -35,7 +37,7 @@ public class PlayerManager : NetworkBehaviour
         {
             Debug.Log("satrtatrar");
             updateIDRpc(SteamClient.SteamId);
-            playerModel.SetActive(false);
+            // playerModel.SetActive(false);
         }
         else
         {
