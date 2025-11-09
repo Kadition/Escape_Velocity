@@ -91,7 +91,7 @@ public class PlayerManager : NetworkBehaviour
             if (holdingPlayer)
             {
                 holdingPlayer = false;
-                OnReleasePlayerRpc(heldPlayerId);
+                OnReleasePlayerRpc(heldPlayerId, connectedPosition.parent.GetComponent<Rigidbody>().linearVelocity);
             }
             else
             {
@@ -145,7 +145,7 @@ public class PlayerManager : NetworkBehaviour
     }
 
     [Rpc(SendTo.Everyone)]
-    public void OnReleasePlayerRpc(ulong id)
+    public void OnReleasePlayerRpc(ulong id, Vector3 velocity)
     {
         springJointMaker.attached = false;
 
@@ -156,6 +156,7 @@ public class PlayerManager : NetworkBehaviour
             {
                 if (player.GetComponent<PlayerManager>().steam_id == SteamClient.SteamId)
                 {
+                    player.GetComponent<Rigidbody>().linearVelocity = velocity;
                     player.GetComponent<PlayerController>().overrideMovement = false;
                     Debug.LogWarning("WEEEEEEEEEEEEEEEEEE2");
                 }
