@@ -9434,7 +9434,6 @@ MonoBehaviour:
   grounded: 0
   rig: {fileID: 223971613767819608}
   animator: {fileID: 7476354017544522442}
-  wasd: {fileID: -1680190386980627800, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   moveForce: 40
   jumpForce: 6
   flipSpeed: 2
@@ -9458,6 +9457,8 @@ MonoBehaviour:
   steam_id: 0
   springJointMaker: {fileID: 4446998762717341229}
   handsPosition: {fileID: 2666911934580109959}
+  animator: {fileID: 7476354017544522442}
+  wasd: {fileID: 0}
   connectedPosition: {fileID: 0}
   connectedRigidbody: {fileID: 0}
 --- !u!114 &4446998762717341229
