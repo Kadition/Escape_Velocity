@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<< HEAD:Assets/Visuals/Materials/mars_texture.jpg.meta
 guid: 1e36acb06b25ff04f9d519c88d8ee5e6
+=======
+guid: 0e8a6387767bd407798cc0cd7b400c19
+>>>>>>> origin/andrew3:Assets/Materials/mars_texture.jpg.meta
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}

@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/Visuals/Materials/ice_texture.jpg.meta
 guid: 348ba4e1765192349a6c66bb65c47f45
+========
+guid: 1c88debc5c3134e7791c8f3d50dd373a
+>>>>>>>> origin/andrew3:Assets/Visuals/Materials/clouds_texture.jpg.meta
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}

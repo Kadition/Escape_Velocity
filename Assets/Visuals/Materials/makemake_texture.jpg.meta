@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<< HEAD:Assets/Visuals/Materials/makemake_texture.jpg.meta
 guid: 4015756cebdc7d14f8f60af48a0a1693
+=======
+guid: ff862bdaf81a643468a674a53f9844ed
+>>>>>>> origin/andrew3:Assets/Materials/makemake_texture.jpg.meta
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}

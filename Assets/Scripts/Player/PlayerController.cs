@@ -208,11 +208,11 @@ public class PlayerController : NetworkBehaviour
             // Jump against gravity
             if (Input.GetKey(KeyCode.C) && !Input.GetKey(KeyCode.Space))// && grounded)
             {
-                // MAKE THIS NOT AGAINST GRAVITY
                 rig.AddForce(-gravityDirection * jumpForce * spaceMovementFactor, ForceMode.Force);
             }
             else if (Input.GetKey(KeyCode.Space) && !Input.GetKey(KeyCode.C))
             {
+<<<<<<< HEAD
                 //ALSO MAKE THIS NOT AGAINST GRAVITY
                 rig.AddForce(gravityDirection * jumpForce * spaceMovementFactor, ForceMode.Force);
             }
@@ -220,6 +220,13 @@ public class PlayerController : NetworkBehaviour
         if (superJumpPressed)
         {
             rig.AddForce(-gravityDirection * jumpForce * 100, ForceMode.Impulse);
+=======
+                rig.AddForce(gravityDirection * jumpForce * spaceMovementFactor, ForceMode.Force); 
+            }
+        }
+        if (superJumpPressed){
+            rig.AddForce(-gravityDirection * jumpForce * 200, ForceMode.Impulse);
+>>>>>>> origin/andrew3
         }
 
 
