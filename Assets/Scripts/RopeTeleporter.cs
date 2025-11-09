@@ -18,12 +18,12 @@ public class RopeTeleporter : MonoBehaviour, Interactable
 
     void Start()
     {
-        if (transform.parent.gameObject != null)
+        if (transform.parent != null)
         {
             ropeParent = transform.parent.gameObject;
         }
         
-        if (transform.parent.gameObject != null && ropeParent.transform.childCount >= 2)
+        if (transform.parent != null && ropeParent.transform.childCount >= 2)
         {
             nearEnd = ropeParent.transform.GetChild(0);
             farEnd = ropeParent.transform.GetChild(1);

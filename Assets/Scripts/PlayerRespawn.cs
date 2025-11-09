@@ -13,6 +13,8 @@ public class PlayerRespawn : NetworkBehaviour
     [SerializeField] Image blackImagePrefab;
     Image blackImage;
     [SerializeField] private float fadeSpeed;
+
+    bool hasReset = false;
     private Vector3 respawnPoint = new Vector3(0, 102, 0);
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -36,7 +38,14 @@ public class PlayerRespawn : NetworkBehaviour
         }
         if (Input.GetKeyDown(KeyCode.Backspace))
         {
+            transform.position = respawnPoint;
+            gameObject.GetComponent<Rigidbody>().linearVelocity = Vector3.zero;
+        }
+
+        if (!hasReset && transform.position.magnitude > 50000)
+        {
             RespawnPlayer();
+            hasReset = true;
         }
     }
 
@@ -73,6 +82,8 @@ public class PlayerRespawn : NetworkBehaviour
         transform.position = respawnPoint;
         gameObject.GetComponent<Rigidbody>().linearVelocity = Vector3.zero;
 
+        hasReset = false;
+
         if (wilhelmScream != null)
         {
             SoundFXManager.instance.PlaySoundFXCLip(wilhelmScream[Random.Range(0, wilhelmScream.Length)], transform, 0.5f);
@@ -92,6 +103,7 @@ public class PlayerRespawn : NetworkBehaviour
         }
 
         blackCanvas.enabled = false;
+
     }
 
 
