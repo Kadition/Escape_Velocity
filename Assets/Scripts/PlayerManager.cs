@@ -156,6 +156,7 @@ public class PlayerManager : NetworkBehaviour
             }
             else
             {
+                Debug.Log("nah fam");
                 animator.SetBool("isGrab", false);
             }
                 
