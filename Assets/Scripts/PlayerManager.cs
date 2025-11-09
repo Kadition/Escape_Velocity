@@ -6,6 +6,8 @@ public class PlayerManager : NetworkBehaviour
 {
     public ulong steam_id;
 
+    const float velocityModifierConstant = 1;
+
     [SerializeField] SpringJointMaker springJointMaker;
 
     [SerializeField] Transform handsPosition;
@@ -167,7 +169,7 @@ public class PlayerManager : NetworkBehaviour
             {
                 if (player.GetComponent<PlayerManager>().steam_id == SteamClient.SteamId)
                 {
-                    player.GetComponent<Rigidbody>().linearVelocity = velocity;
+                    player.GetComponent<Rigidbody>().linearVelocity = velocity * velocityModifierConstant;
                     player.GetComponent<PlayerController>().overrideMovement = false;
                     Debug.LogWarning("WEEEEEEEEEEEEEEEEEE2");
                 }
