@@ -6,7 +6,7 @@ public class PlayerManager : NetworkBehaviour
 {
     public ulong steam_id;
 
-    const float velocityModifierConstant = 1;
+    const float velocityModifierConstant = 5;
 
     [SerializeField] SpringJointMaker springJointMaker;
 
@@ -106,7 +106,7 @@ public class PlayerManager : NetworkBehaviour
 
                 gameObject.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeRotation;
 
-                OnReleasePlayerRpc(heldPlayerId, connectedRigidbody.linearVelocity);
+                OnReleasePlayerRpc(heldPlayerId, transform.position + transform.forward * 1.5f, transform.forward, connectedRigidbody.linearVelocity.magnitude);
             }
             else
             {
@@ -155,7 +155,6 @@ public class PlayerManager : NetworkBehaviour
                 {
                     player.GetComponent<PlayerController>().overrideMovement = true;
                     player.GetComponent<PlayerController>().placeToTransform = connectedPosition;
-                    Debug.LogWarning("WEEEEEEEEEEEEEEEEEE");
                     break;
                 }
             }
@@ -163,7 +162,7 @@ public class PlayerManager : NetworkBehaviour
     }
 
     [Rpc(SendTo.Everyone)]
-    public void OnReleasePlayerRpc(ulong id, Vector3 velocity)
+    public void OnReleasePlayerRpc(ulong id, Vector3 position, Vector3 velocity, float magnitude)
     {
         springJointMaker.attached = false;
 
@@ -174,9 +173,9 @@ public class PlayerManager : NetworkBehaviour
             {
                 if (player.GetComponent<PlayerManager>().steam_id == SteamClient.SteamId)
                 {
-                    player.GetComponent<Rigidbody>().linearVelocity = velocity * velocityModifierConstant;
+                    player.transform.position = position;
+                    player.GetComponent<Rigidbody>().linearVelocity = velocity * magnitude * velocityModifierConstant;
                     player.GetComponent<PlayerController>().overrideMovement = false;
-                    Debug.LogWarning("WEEEEEEEEEEEEEEEEEE2");
                 }
             }
         }

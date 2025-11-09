@@ -113,7 +113,7 @@ public class PlayerController : NetworkBehaviour
 
             // Use player-relative UP, not world up
             Vector3 playerUp = -transform.up;
-            transform.Rotate(playerUp, spin, Space.World);
+            transform.Rotate(playerUp, spin * Time.deltaTime * 500f, Space.World);
 
             return;
         }
