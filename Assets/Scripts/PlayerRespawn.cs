@@ -14,6 +14,8 @@ public class PlayerRespawn : NetworkBehaviour
     Image blackImage;
     [SerializeField] private float fadeSpeed;
 
+    Coroutine coroutine;
+
     bool hasReset = false;
     private Vector3 respawnPoint = new Vector3(0, 102, 0);
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -40,6 +42,11 @@ public class PlayerRespawn : NetworkBehaviour
         {
             transform.position = respawnPoint;
             gameObject.GetComponent<Rigidbody>().linearVelocity = Vector3.zero;
+            if(coroutine != null)
+            {
+                StopCoroutine(coroutine);
+                coroutine = null;
+            }
         }
 
         if (!hasReset && transform.position.magnitude > 50000)
@@ -51,7 +58,12 @@ public class PlayerRespawn : NetworkBehaviour
 
     public void RespawnPlayer()
     {
-        StartCoroutine(FadeToBlack(fadeSpeed));
+        if(coroutine != null)
+        {
+            StopCoroutine(coroutine);
+            coroutine = null;
+        }
+        coroutine = StartCoroutine(FadeToBlack(fadeSpeed));
     }
 
 
