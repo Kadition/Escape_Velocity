@@ -68,12 +68,4 @@ public class PlayerNetworkManager : NetworkBehaviour
             Debug.Log("player doesnt exist in voice data");
         }
     }
-
-    [Rpc(SendTo.Server)]
-    public void spawnTheRigidCoachRpc(ulong id)
-    {
-        GameObject coachInstance = Instantiate(handlePrefab);
-
-        coachInstance.GetComponent<NetworkObject>().SpawnWithOwnership(id);
-    }
 }
