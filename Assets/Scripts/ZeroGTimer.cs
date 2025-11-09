@@ -43,6 +43,7 @@ public class ZeroGTimer : NetworkBehaviour
     PlayerController pC;
     [SerializeField] float timerLength = 10f;
     Coroutine deathCoroutine;
+    Coroutine fadeToRed;
     [SerializeField] Canvas redCanvas;
     [SerializeField] Image redImage;
 
@@ -62,7 +63,7 @@ public class ZeroGTimer : NetworkBehaviour
         {
             return;
         }
-        if (0f == pC.getNormGravity().magnitude)
+        if (0f == pC.getGravityVector().magnitude)
         {
             if (deathCoroutine == null)
             {
@@ -83,11 +84,10 @@ public class ZeroGTimer : NetworkBehaviour
 
     IEnumerator DeathTimer()
     {
-        StartCoroutine(FadeToRed());
+        fadeToRed = StartCoroutine(FadeToRed());
         yield return new WaitForSeconds(timerLength);
         GetComponent<PlayerRespawn>().RespawnPlayer();
         ResetRedFade();
-        deathCoroutine = null; // reset after completion
     }
 
     IEnumerator FadeToRed()
@@ -107,7 +107,11 @@ public class ZeroGTimer : NetworkBehaviour
     public void ResetRedFade()
     {
         // jump back to transparent
-        StopCoroutine(FadeToRed());
+        if(fadeToRed != null)
+        {
+            StopCoroutine(fadeToRed);
+            fadeToRed = null;
+        }
         Color color = redImage.color;
         color.a = 0;
         redImage.color = color;
