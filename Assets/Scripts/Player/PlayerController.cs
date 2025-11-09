@@ -214,9 +214,9 @@ public class PlayerController : NetworkBehaviour
                 rig.AddForce(-gravityDirection * jumpForce, ForceMode.Impulse);
             }
 
-            if(rig.linearVelocity.magnitude > maxGroundedVelocity){
-                rig.linearVelocity = rig.linearVelocity * (maxGroundedVelocity / rig.linearVelocity.magnitude);
-            }
+            // if(rig.linearVelocity.magnitude > maxGroundedVelocity){
+                //rig.linearVelocity = rig.linearVelocity * (maxGroundedVelocity / rig.linearVelocity.magnitude);
+            // }
         }
         else{
             animator.SetBool("isGrounded", false);
