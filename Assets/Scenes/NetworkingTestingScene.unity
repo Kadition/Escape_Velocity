@@ -20,23 +20,23 @@ RenderSettings:
   m_FogDensity: 0.01
   m_LinearFogStart: 0
   m_LinearFogEnd: 300
-  m_AmbientSkyColor: {r: 0.212, g: 0.227, b: 0.259, a: 1}
+  m_AmbientSkyColor: {r: 0.005181517, g: 0.005181517, b: 0.008568125, a: 1}
   m_AmbientEquatorColor: {r: 0.114, g: 0.125, b: 0.133, a: 1}
   m_AmbientGroundColor: {r: 0.047, g: 0.043, b: 0.035, a: 1}
-  m_AmbientIntensity: 0.8
+  m_AmbientIntensity: 0.4
   m_AmbientMode: 0
-  m_SubtractiveShadowColor: {r: 0.1137255, g: 0.121568635, b: 0.14509805, a: 1}
+  m_SubtractiveShadowColor: {r: 0.08627451, g: 0.078431375, b: 0.12941177, a: 1}
   m_SkyboxMaterial: {fileID: 2100000, guid: f5935ee520cf2344ebc4dc3e25e100e9, type: 2}
   m_HaloStrength: 0.5
   m_FlareStrength: 1
   m_FlareFadeSpeed: 3
   m_HaloTexture: {fileID: 0}
   m_SpotCookie: {fileID: 10001, guid: 0000000000000000e000000000000000, type: 0}
-  m_DefaultReflectionMode: 0
+  m_DefaultReflectionMode: 1
   m_DefaultReflectionResolution: 128
   m_ReflectionBounces: 1
-  m_ReflectionIntensity: 0
-  m_CustomReflection: {fileID: 0}
+  m_ReflectionIntensity: 1
+  m_CustomReflection: {fileID: 8900000, guid: 2462cd44851142d41b500e6e6375933c, type: 3}
   m_Sun: {fileID: 410087040}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
@@ -615,7 +615,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9769927aeb5bd420d9030d810a5b5899, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
-  maxAcc: 50
+  maxAcc: 10
   dropOff: 0.5
   affectRadiusFactor: 1.5
   visualRadius: 0
@@ -893,7 +893,7 @@ MonoBehaviour:
   ShowTopMostFoldoutHeaderGroup: 1
   spawnLocation: {x: 0, y: 80, z: 0}
   playerPrefab: {fileID: 7183096211676564755, guid: 9c604a11d391a3140a4d34d0eccb269a, type: 3}
-  handlePrefab: {fileID: 0}
+  connectPrefab: {fileID: 2567612836663916389, guid: f290eba66b5e43b44bf23e2435c65761, type: 3}
 --- !u!4 &521836231
 Transform:
   m_ObjectHideFlags: 0
@@ -1781,7 +1781,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 5f7621b189127bb48b3c785c73bb2761, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 917c07013b5d82243a3b9cd5349e96a7, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1

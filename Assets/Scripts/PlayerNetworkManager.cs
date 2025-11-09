@@ -8,7 +8,7 @@ public class PlayerNetworkManager : NetworkBehaviour
     public Vector3 spawnLocation = new Vector3(0f, 80f, 0f);
     [SerializeField] private GameObject playerPrefab;
 
-    [SerializeField] private GameObject handlePrefab;
+    [SerializeField] private GameObject connectPrefab;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
 
     void Awake()
@@ -54,7 +54,11 @@ public class PlayerNetworkManager : NetworkBehaviour
         GameObject playerInstance = Instantiate(playerPrefab);
         playerInstance.transform.position = spawnLocation;
 
+        GameObject connectInstance = Instantiate(connectPrefab);
+
         playerInstance.GetComponent<NetworkObject>().SpawnWithOwnership(id);
+
+        connectInstance.GetComponent<NetworkObject>().SpawnWithOwnership(id);
     }
 
     [Rpc(SendTo.NotMe)]
