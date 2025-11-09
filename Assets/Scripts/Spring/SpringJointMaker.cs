@@ -37,9 +37,15 @@ public class SpringJointMaker : NetworkBehaviour
     {
         if (!attached)
         {
+            if (springJoint != null)
+            {
+                Destroy(springJoint);
+            }
+            rope.SetActive(false);
             return;
         }
 
+        rope.SetActive(true);
         AlignCylinder(handsLocation.transform.position, connectedPosition.transform.position);
     }
 
