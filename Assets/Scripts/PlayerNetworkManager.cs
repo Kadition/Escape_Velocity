@@ -7,6 +7,8 @@ public class PlayerNetworkManager : NetworkBehaviour
     public static PlayerNetworkManager instance;
     public Vector3 spawnLocation = new Vector3(0f, 80f, 0f);
     [SerializeField] private GameObject playerPrefab;
+
+    [SerializeField] private GameObject handlePrefab;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
 
     void Awake()

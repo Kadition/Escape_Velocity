@@ -10,6 +10,8 @@ public class GameNetworkManager : MonoBehaviour
     public static GameNetworkManager instance { get; private set; } = null;
     private FacepunchTransport transport = null;
 
+    [SerializeField] GameObject canvas;
+
     public Lobby? currentLobby { get; private set; } = null;
 
     public ulong hostId;
@@ -162,6 +164,8 @@ public class GameNetworkManager : MonoBehaviour
 
         SteamUser.VoiceRecord = true;
 
+        canvas.SetActive(false);
+
         PlayerNetworkManager.instance.spawnMeInCoachRpc(NetworkManager.Singleton.LocalClientId, SteamClient.SteamId);
     }
 
@@ -179,17 +183,24 @@ public class GameNetworkManager : MonoBehaviour
 
         SteamUser.VoiceRecord = true;
 
+        canvas.SetActive(false);
+
         StartCoroutine(clientWait());
     }
 
     IEnumerator clientWait()
     {
-        if(NetworkManager.Singleton == null || !NetworkManager.Singleton.IsListening)
+        while(NetworkManager.Singleton == null || !NetworkManager.Singleton.IsListening || PlayerNetworkManager.instance == null)
         {
             yield return null;
         }
-        
-        yield return new WaitForSeconds(5);
+
+        yield return new WaitForSeconds(10);
+
+        if(PlayerNetworkManager.instance == null)
+        {
+            Debug.Log("ASDASFJASGFNMSF");
+        }
 
         PlayerNetworkManager.instance.spawnMeInCoachRpc(NetworkManager.Singleton.LocalClientId, SteamClient.SteamId);
     }

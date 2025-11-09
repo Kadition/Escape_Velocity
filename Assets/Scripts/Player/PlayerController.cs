@@ -19,7 +19,11 @@ public class PlayerController : NetworkBehaviour
 
     public Vector3 lastGravityDir;
 
+    public bool overrideMovement = false;
+
     GameObject[] planetList;
+
+    public Transform placeToTransform;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -40,7 +44,7 @@ public class PlayerController : NetworkBehaviour
 
     public void updateGravity(Vector3 g){
         
-        if (!IsOwner)
+        if (!IsOwner || overrideMovement)
         {
             return;
         }
@@ -52,7 +56,7 @@ public class PlayerController : NetworkBehaviour
 
     void OnCollisionStay(Collision collision)
     {
-        if (!IsOwner)
+        if (!IsOwner || overrideMovement)
         {
             return;
         }
@@ -72,7 +76,7 @@ public class PlayerController : NetworkBehaviour
 
     void OnCollisionExit(Collision collision)
     {
-        if (!IsOwner)
+        if (!IsOwner || overrideMovement)
         {
             return;
         }
@@ -89,8 +93,14 @@ public class PlayerController : NetworkBehaviour
 
     void Update()
     {
-        if(!IsOwner)
+        if (!IsOwner)
         {
+            return;
+        }
+        
+        if(overrideMovement)
+        {
+            transform.position = placeToTransform.position;
             return;
         }
 
@@ -105,7 +115,7 @@ public class PlayerController : NetworkBehaviour
 
     void FixedUpdate()
     {
-        if (!IsOwner)
+        if (!IsOwner | overrideMovement)
         {
             return;
         }
