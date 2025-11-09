@@ -178,7 +178,7 @@ Camera:
     width: 1
     height: 1
   near clip plane: 0.3
-  far clip plane: 1000
+  far clip plane: 5000
   field of view: 60
   orthographic: 0
   orthographic size: 5
@@ -1104,7 +1104,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 850aa19a3c701104ab9e7dbcb1fcc09a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameNetworkManager
-  canvas: {fileID: 0}
+  canvas: {fileID: 343214867}
   hostId: 0
 --- !u!4 &1595643248
 Transform:

@@ -131,7 +131,7 @@ public class PlayerManager : NetworkBehaviour
 
         springJointMaker.attached = true;
 
-        rb.constraints = RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ;
+        rb.constraints = RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ | RigidbodyConstraints.FreezeRotation;
 
         holdingPlayer = true;
     }

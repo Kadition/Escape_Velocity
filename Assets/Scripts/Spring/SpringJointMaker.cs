@@ -14,6 +14,8 @@ public class SpringJointMaker : MonoBehaviour
 
     public bool attached = false;
 
+    [SerializeField] private GameObject handsLocation;
+
     void Update()
     {
         if (!attached)
@@ -21,7 +23,7 @@ public class SpringJointMaker : MonoBehaviour
             return;
         }
 
-        AlignCylinder(transform.position, connectedPlayer.position);
+        AlignCylinder(handsLocation.transform.position, connectedPlayer.position);
     }
 
     public void MakeJoint(Rigidbody rb)
@@ -68,9 +70,9 @@ public class SpringJointMaker : MonoBehaviour
 
         // Set scale (assuming the cylinder's height is along Y)
         float length = Vector3.Distance(start, end);
-        Vector3 scale = transform.localScale;
+        Vector3 scale = rope.transform.localScale;
         scale.y = length / 2f; // Unity's default cylinder is 2 units tall
-        transform.localScale = scale;
+        rope.transform.localScale = scale;
 
         // Set rotation
         rope.transform.up = (end - start).normalized;
