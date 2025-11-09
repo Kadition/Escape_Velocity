@@ -28,7 +28,7 @@ public class PlayerRespawn : MonoBehaviour
         }
     }
 
-    private void RespawnPlayer()
+    public void RespawnPlayer()
     {
         StartCoroutine(FadeToBlack(fadeSpeed));
     }
