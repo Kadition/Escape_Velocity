@@ -9,9 +9,9 @@ public class SpringJointMaker : MonoBehaviour
 
     public GameObject rope;
 
-    [SerializeField] private GameObject connectedPosition;
+    public GameObject connectedPosition;
 
-    [SerializeField] private Rigidbody connectedRigidbody;
+    public Rigidbody connectedRigidbody;
 
     public bool attached = false;
 

@@ -52,9 +52,15 @@ public class PlayerNetworkManager : NetworkBehaviour
 
         GameObject playerInstance = Instantiate(playerPrefab);
 
-        playerInstance.GetComponent<NetworkObject>().SpawnWithOwnership(id);
-
         GameObject connectInstance = Instantiate(connectPrefab);
+
+        SpringJointMaker springJointMaker = playerInstance.GetComponent<SpringJointMaker>();
+
+        springJointMaker.connectedPosition = connectInstance;
+
+        springJointMaker.connectedRigidbody = connectInstance.GetComponent<Rigidbody>();
+
+        playerInstance.GetComponent<NetworkObject>().SpawnWithOwnership(id);
 
         connectInstance.GetComponent<NetworkObject>().SpawnWithOwnership(id);
     }

@@ -14,10 +14,10 @@ public class PlayerManager : NetworkBehaviour
 
     ulong heldPlayerId; // steam id
 
-    [SerializeField] Rigidbody rb;
+    // [SerializeField] Rigidbody rb;
 
-    [SerializeField] Rigidbody handRigidbody;
-    [SerializeField] Rigidbody connectedRigidbody;
+    // [SerializeField] Rigidbody handRigidbody;
+    // [SerializeField] Rigidbody connectedRigidbody;
 
     // ! use this for what the other person should copy
     [SerializeField] public Transform connectedPosition;
