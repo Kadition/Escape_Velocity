@@ -14,6 +14,7 @@ public class PartCounter : MonoBehaviour
             allPartsCollected = true;
             Debug.Log("All parts collected!");
             // Trigger any event here, like enabling a ship or finishing the level
+            Application.Quit();
         }
     }
 }
