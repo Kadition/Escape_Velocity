@@ -190,22 +190,37 @@ public class GameNetworkManager : MonoBehaviour
 
     IEnumerator clientWait()
     {
-        while(NetworkManager.Singleton == null || !NetworkManager.Singleton.IsListening || PlayerNetworkManager.instance == null)
-        {
-            yield return null;
-        }
+    while(NetworkManager.Singleton == null || !NetworkManager.Singleton.IsListening || PlayerNetworkManager.instance == null)
+        yield return null;
 
-        yield return new WaitForSeconds(1);
+    // Wait until this client is connected
+    bool connected = false;
+    NetworkManager.Singleton.OnClientConnectedCallback += (id) => {
+        if (id == NetworkManager.Singleton.LocalClientId)
+            connected = true;
+    };
+    while (!connected)
+        yield return null;
 
-        if (PlayerNetworkManager.instance == null)
-        {
-            Debug.Log("ASDASFJASGFNMSF");
-        }
-
-        // PlayerNetworkManager.instance.spawnMeInCoachRpc(NetworkManager.Singleton.LocalClientId, SteamClient.SteamId);
-        
-        PlayerNetworkManager.instance.spawnMeInCoachRpc(0, SteamClient.SteamId);
+    PlayerNetworkManager.instance.spawnMeInCoachRpc(NetworkManager.Singleton.LocalClientId, SteamClient.SteamId);
     }
+
+    // IEnumerator clientWait()
+    // {
+    //     while(NetworkManager.Singleton == null || !NetworkManager.Singleton.IsListening || PlayerNetworkManager.instance == null)
+    //     {
+    //         yield return null;
+    //     }
+
+    //     yield return new WaitForSeconds(1);
+
+    //     if (PlayerNetworkManager.instance == null)
+    //     {
+    //         Debug.Log("ASDASFJASGFNMSF");
+    //     }
+
+    //     PlayerNetworkManager.instance.spawnMeInCoachRpc(NetworkManager.Singleton.LocalClientId, SteamClient.SteamId);
+    // }
 
     public void Disconnected()
     {
