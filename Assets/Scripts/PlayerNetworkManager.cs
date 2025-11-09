@@ -7,7 +7,7 @@ public class PlayerNetworkManager : NetworkBehaviour
     public static PlayerNetworkManager instance;
     [SerializeField] private GameObject playerPrefab;
 
-    [SerializeField] private GameObject handlePrefab;
+    [SerializeField] private GameObject connectPrefab;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
 
     void Awake()
@@ -53,6 +53,10 @@ public class PlayerNetworkManager : NetworkBehaviour
         GameObject playerInstance = Instantiate(playerPrefab);
 
         playerInstance.GetComponent<NetworkObject>().SpawnWithOwnership(id);
+
+        GameObject connectInstance = Instantiate(connectPrefab);
+
+        connectInstance.GetComponent<NetworkObject>().SpawnWithOwnership(id);
     }
 
     [Rpc(SendTo.NotMe)]
