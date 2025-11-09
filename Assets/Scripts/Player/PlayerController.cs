@@ -93,6 +93,7 @@ public class PlayerController : NetworkBehaviour
         if(overrideMovement)
         {
             transform.position = placeToTransform.position;
+            Debug.LogWarning("ASNDASJDFAJSDMA");
             return;
         }
 

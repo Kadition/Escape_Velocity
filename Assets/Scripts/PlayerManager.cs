@@ -146,6 +146,7 @@ public class PlayerManager : NetworkBehaviour
                         {
                             playerme.GetComponent<PlayerController>().overrideMovement = true;
                             playerme.GetComponent<PlayerController>().placeToTransform = connectedPosition;
+                            Debug.LogWarning("WEEEEEEEEEEEEEEEEEE");
                             break;
                         }
                     }
