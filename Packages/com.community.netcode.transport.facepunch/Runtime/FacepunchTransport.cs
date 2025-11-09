@@ -62,6 +62,11 @@ namespace Netcode.Transports.Facepunch
             SteamClient.RunCallbacks();
         }
 
+        private void OnDestroy()
+        {
+            SteamClient.Shutdown();
+        }
+
         #endregion
 
         #region NetworkTransport Overrides

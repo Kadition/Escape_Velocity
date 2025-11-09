@@ -107,6 +107,8 @@ public class PlayerManager : NetworkBehaviour
     [Rpc(SendTo.Everyone)]
     public void OnClickPlayerRpc(ulong id, ulong my_id)
     {
+        springJointMaker.attached = true;
+
         if(id == SteamClient.SteamId)
         {
             GameObject[] playerlist = GameObject.FindGameObjectsWithTag("Player");
@@ -144,6 +146,8 @@ public class PlayerManager : NetworkBehaviour
     [Rpc(SendTo.Everyone)]
     public void OnReleasePlayerRpc(ulong id)
     {
+        springJointMaker.attached = false;
+
         if(id == SteamClient.SteamId)
         {
             GameObject[] playerlist = GameObject.FindGameObjectsWithTag("Player");

@@ -5,14 +5,19 @@ using UnityEngine.InputSystem;
 public class PlayerController : NetworkBehaviour
 {
     public bool grounded;
-    public Vector3 NormGravity = new Vector3(0f, -9.81f, 0f);
-    public Vector3 gravityVector;
-    public bool gravityUpdated;
+    private Vector3 NormGravity = new Vector3(0f, 0f, 0f);
+    private Vector3 gravityVector;
+    private bool gravityUpdated;
     [SerializeField] private Rigidbody rig;
     public float moveForce = 20f;
     public float jumpForce = 6f;
 
     public float flipSpeed = 10f;
+    private float spaceMovementFactor = 0.2f;//0.2f;
+
+    public float maxGroundedVelocity = 10;
+
+    public Vector3 lastGravityDir;
 
     public bool overrideMovement = false;
 
@@ -32,6 +37,7 @@ public class PlayerController : NetworkBehaviour
         gravityVector = NormGravity;
         gravityUpdated = false;
         rig.useGravity = false;
+        lastGravityDir = new Vector3(0f, 1f, 0f);
 
         planetList = GameObject.FindGameObjectsWithTag("Planet");
     }
@@ -83,6 +89,8 @@ public class PlayerController : NetworkBehaviour
 
     bool jumpPressed = false;
 
+    bool superJumpPressed = false;
+
     void Update()
     {
         if (!IsOwner)
@@ -101,6 +109,8 @@ public class PlayerController : NetworkBehaviour
 
         if (Input.GetKeyDown(KeyCode.Space))
             jumpPressed = true;
+        if (Input.GetKeyDown(KeyCode.G))
+            superJumpPressed = true;
     }
 
     void FixedUpdate()
@@ -109,7 +119,7 @@ public class PlayerController : NetworkBehaviour
         {
             return;
         }
-
+        float? coefFriction = null;
         foreach (GameObject planet in planetList)
         {
             PlanetScript planetScript = planet.GetComponent<PlanetScript>();
@@ -123,49 +133,90 @@ public class PlayerController : NetworkBehaviour
                 Vector3 g = (planet.transform.position - transform.position).normalized * Mathf.Lerp(planetScript.maxAcc, planetScript.maxAcc*planetScript.dropOff, (distance - planetScript.visualRadius) / (planetScript.visualRadius * planetScript.affectRadiusFactor));
 
                 updateGravity(g);
+
+                coefFriction = planetScript.coefFriction;
             }
         }
-
+        Vector3 gravityDirection;
         if (!gravityUpdated)
         {
             gravityVector = NormGravity;
+            gravityDirection = lastGravityDir;
         }
+        else
+        {
+            gravityDirection = gravityVector.normalized;
 
-        Vector3 gravityDirection = gravityVector.normalized;
+            Vector3 up = -gravityDirection.normalized;
 
-        Vector3 up = -gravityDirection.normalized;
+            // Recompute a forward direction that is perpendicular to up
+            Vector3 forward = Vector3.ProjectOnPlane(transform.forward, up).normalized;
 
-        // Recompute a forward direction that is perpendicular to up
-        Vector3 forward = Vector3.ProjectOnPlane(transform.forward, up).normalized;
+            Quaternion targetRot = Quaternion.LookRotation(forward, up);
 
-        Quaternion targetRot = Quaternion.LookRotation(forward, up);
-
-        // Smooth rotate toward that absolute orientation
-        transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRot, 180f * Time.deltaTime * flipSpeed);
+            // Smooth rotate toward that absolute orientation
+            transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRot, 180f * Time.deltaTime * flipSpeed);
+        }
 
         float x = inputX;
         float z = inputZ;
 
-        // Movement direction relative to facing direction
-        Vector3 moveDir = (transform.forward * z + transform.right * x).normalized;
+        if(grounded){
+            // Movement direction relative to facing direction
+            Vector3 moveDir = (transform.forward * z + transform.right * x).normalized;
 
-        // Apply movement force continuously
-        rig.AddForce(moveDir * moveForce, ForceMode.Force);
+            // Apply movement force continuously
+            rig.AddForce(moveDir * moveForce, ForceMode.Force);
 
-        // Apply gravity continuously
-        rig.AddForce(gravityVector, ForceMode.Force);
+            // Apply gravity continuously
+            rig.AddForce(gravityVector, ForceMode.Force);
 
-        // Jump against gravity
-        if (jumpPressed && grounded)
-        {
-            rig.AddForce(-gravityDirection * jumpForce, ForceMode.Impulse);
-            Debug.Log("Jumped!");
+            // Friction uwu
+            if (coefFriction != null)
+            {
+                rig.AddForce(-rig.linearVelocity * ((float) coefFriction), ForceMode.Force);
+            }
+
+            // Jump against gravity
+            if (jumpPressed)// && grounded)
+            {
+                rig.AddForce(-gravityDirection * jumpForce, ForceMode.Impulse);
+            }
+
+            if(rig.linearVelocity.magnitude > maxGroundedVelocity){
+                rig.linearVelocity = rig.linearVelocity * (maxGroundedVelocity / rig.linearVelocity.magnitude);
+            }
         }
-        else if(jumpPressed){
-            Debug.Log("Failure of a jump");
+        else{
+            Vector3 moveDir = (transform.forward * z + transform.right * x).normalized;
+
+            // Apply movement force continuously
+            rig.AddForce(moveDir * moveForce * spaceMovementFactor, ForceMode.Force);
+
+            // Apply gravity continuously
+            rig.AddForce(gravityVector, ForceMode.Force);
+
+            // Jump against gravity
+            if (Input.GetKey(KeyCode.C) && !Input.GetKey(KeyCode.Space))// && grounded)
+            {
+                // MAKE THIS NOT AGAINST GRAVITY
+                rig.AddForce(-gravityDirection * jumpForce * spaceMovementFactor, ForceMode.Force);
+            }
+            else if(Input.GetKey(KeyCode.Space) && !Input.GetKey(KeyCode.C))
+            {
+                //ALSO MAKE THIS NOT AGAINST GRAVITY
+                rig.AddForce(gravityDirection * jumpForce * spaceMovementFactor, ForceMode.Force); 
+            }
         }
+        if (superJumpPressed){
+            rig.AddForce(-gravityDirection * jumpForce * 100, ForceMode.Impulse);
+        }
+
+        
 
         jumpPressed = false;
         gravityUpdated = false;
+        superJumpPressed = false;
+        lastGravityDir = gravityDirection;
     }
 }
