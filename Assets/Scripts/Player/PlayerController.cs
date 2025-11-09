@@ -26,9 +26,10 @@ public class PlayerController : NetworkBehaviour
 
     public bool overrideMovement = false;
 
-    private float quickTime = 0.25f;
-    private float quickTimeElapsed = 0f;
+    private bool lastOverridden = false;
 
+    private float quickBuffer = 0.1f;
+    private float quickTimer = 0f;
     GameObject[] planetList;
 
     public Transform placeToTransform;
@@ -219,15 +220,18 @@ public class PlayerController : NetworkBehaviour
             }
 
             if(rig.linearVelocity.magnitude > maxGroundedVelocity){
-                quickTimeElapsed += Time.fixedDeltaTime;
-                if (quickTimeElapsed > quickTime)
-                {
+                if(lastOverridden && !overrideMovement || quickTimer > 0f){
+                    quickTimer += Time.fixedDeltaTime;
+                    if(quickTimer > quickBuffer){
+                        quickTimer = 0f;
+                    }
+                }
+                else if(!overrideMovement){
                     rig.linearVelocity = rig.linearVelocity * (maxGroundedVelocity / rig.linearVelocity.magnitude);
                 }
             }
-            else{
-                quickTimeElapsed = 0;
-            }
+
+            
         }
         else{
             animator.SetBool("isGrounded", false);
@@ -269,5 +273,6 @@ public class PlayerController : NetworkBehaviour
         gravityUpdated = false;
         superJumpPressed = false;
         lastGravityDir = gravityDirection;
+        lastOverridden = overrideMovement;
     }
 }
