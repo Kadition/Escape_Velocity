@@ -7260,7 +7260,7 @@ Animator:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5919325066710794191}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Avatar: {fileID: 9000000, guid: 767f63b6c5ec83f4e80357ec98d5cc9e, type: 3}
   m_Controller: {fileID: 9100000, guid: d4b0cf2548e731f4eadedb305cb26b7c, type: 2}
   m_CullingMode: 1
@@ -7281,7 +7281,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5919325066710794191}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e8d0727d5ae3244e3b569694d3912374, type: 3}
   m_Name: 
@@ -9298,6 +9298,8 @@ GameObject:
   - component: {fileID: 1639936318760307021}
   - component: {fileID: 5429414347932418297}
   - component: {fileID: 8166429620096703595}
+  - component: {fileID: 6362285198583849559}
+  - component: {fileID: 7476354017544522442}
   m_Layer: 6
   m_Name: Player
   m_TagString: Player
@@ -9492,6 +9494,7 @@ MonoBehaviour:
   grounded: 0
   rig: {fileID: 223971613767819608}
   animator: {fileID: 1120928676956946191}
+  wasd: {fileID: -1680190386980627800, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   moveForce: 40
   jumpForce: 6
   flipSpeed: 2
@@ -9689,6 +9692,64 @@ AudioReverbFilter:
   m_LFReference: 250
   m_ReflectionsDelay: 0
   m_ReverbPreset: 9
+--- !u!114 &6362285198583849559
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7183096211676564755}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e8d0727d5ae3244e3b569694d3912374, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.Components.NetworkAnimator
+  ShowTopMostFoldoutHeaderGroup: 1
+  TransitionStateInfoList:
+  - IsCrossFadeExit: 0
+    Layer: 0
+    OriginatingState: 2081823275
+    DestinationState: 125937960
+    TransitionDuration: 0.25
+    TriggerNameHash: -2141573296
+    TransitionIndex: 0
+  - IsCrossFadeExit: 0
+    Layer: 0
+    OriginatingState: 765711723
+    DestinationState: 125937960
+    TransitionDuration: 0.25
+    TriggerNameHash: -2141573296
+    TransitionIndex: 0
+  - IsCrossFadeExit: 0
+    Layer: 0
+    OriginatingState: 1533177906
+    DestinationState: 125937960
+    TransitionDuration: 0.25
+    TriggerNameHash: -2141573296
+    TransitionIndex: 0
+  m_Animator: {fileID: 1120928676956946191}
+--- !u!95 &7476354017544522442
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7183096211676564755}
+  m_Enabled: 1
+  m_Avatar: {fileID: 9000000, guid: 767f63b6c5ec83f4e80357ec98d5cc9e, type: 3}
+  m_Controller: {fileID: 9100000, guid: d4b0cf2548e731f4eadedb305cb26b7c, type: 2}
+  m_CullingMode: 1
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &7220608963548646186
 GameObject:
   m_ObjectHideFlags: 0

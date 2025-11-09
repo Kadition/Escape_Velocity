@@ -12,6 +12,8 @@ public class PlayerController : NetworkBehaviour
     [SerializeField] private Rigidbody rig;
 
     [SerializeField] private Animator animator;
+
+    [SerializeField] private InputActionReference wasd;
     public float moveForce = 20f;
     public float jumpForce = 6f;
 
@@ -107,7 +109,7 @@ public class PlayerController : NetworkBehaviour
 
             transform.position = placeToTransform.position;
 
-            float spin = (Input.GetButton("A") ? 1 : 0) + (Input.GetButton("D") ? -1 : 0);
+            float spin = wasd.action.ReadValue<Vector2>().x;
 
             // Use player-relative UP, not world up
             Vector3 playerUp = -transform.up;
