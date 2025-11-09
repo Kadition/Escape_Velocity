@@ -22,6 +22,8 @@ public class PlayerManager : NetworkBehaviour
     // ! use this for what the other person should copy
     public Transform connectedPosition;
 
+    public Rigidbody connectedRigidbody;
+
     void Start()
     {
         Debug.Log("satrtatrar2");
@@ -40,6 +42,7 @@ public class PlayerManager : NetworkBehaviour
             if (joint.GetComponent<NetworkBehaviour>().OwnerClientId == OwnerClientId)
             {
                 connectedPosition = joint.transform;
+                connectedRigidbody = joint.GetComponent<Rigidbody>();
                 return;
             }
         }
@@ -96,7 +99,7 @@ public class PlayerManager : NetworkBehaviour
 
                 gameObject.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeRotation;
 
-                OnReleasePlayerRpc(heldPlayerId, connectedPosition.parent.GetComponent<Rigidbody>().linearVelocity);
+                OnReleasePlayerRpc(heldPlayerId, connectedRigidbody.linearVelocity);
             }
             else
             {
