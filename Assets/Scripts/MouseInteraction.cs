@@ -1,8 +1,9 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using Unity.Netcode;
 
-public class MouseInteraction : MonoBehaviour
+public class MouseInteraction : NetworkBehaviour
 {
     [SerializeField] private Canvas interactableCanvas;
     private Image interactableImage;
@@ -17,6 +18,10 @@ public class MouseInteraction : MonoBehaviour
 
     void Start()
     {
+        if (!IsOwner)
+        {
+            return;
+        }
         // Get UI elements
         interactableImage = interactableCanvas.transform.GetChild(0).GetComponent<Image>();
         interactableText = interactableImage.transform.GetChild(0).GetComponent<TextMeshProUGUI>();
@@ -28,6 +33,10 @@ public class MouseInteraction : MonoBehaviour
 
     void Update()
     {
+        if (!IsOwner)
+        {
+            return;
+        }
         Vector3 mousePosition = Input.mousePosition;
         Ray ray = cam.ScreenPointToRay(mousePosition);
 
