@@ -1,4 +1,5 @@
 using Unity.Netcode;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -9,6 +10,8 @@ public class PlayerController : NetworkBehaviour
     private Vector3 gravityVector;
     private bool gravityUpdated;
     [SerializeField] private Rigidbody rig;
+
+    [SerializeField] private Animator animator;
     public float moveForce = 20f;
     public float jumpForce = 6f;
 
@@ -97,9 +100,11 @@ public class PlayerController : NetworkBehaviour
         {
             return;
         }
-        
-        if(overrideMovement)
+
+        if (overrideMovement)
         {
+            animator.SetBool("isGrab", true);
+
             transform.position = placeToTransform.position;
 
             float spin = (Input.GetButton("A") ? 1 : 0) + (Input.GetButton("D") ? -1 : 0);
@@ -110,12 +115,19 @@ public class PlayerController : NetworkBehaviour
 
             return;
         }
+        
+        animator.SetBool("isGrab", false);
 
         inputX = Input.GetAxisRaw("Horizontal");
         inputZ = Input.GetAxisRaw("Vertical");
 
         if (Input.GetKeyDown(KeyCode.Space))
+        {
+            animator.SetTrigger("jumpTrigger");
             jumpPressed = true;
+        }
+
+
         if (Input.GetKeyDown(KeyCode.G))
             superJumpPressed = true;
     }
@@ -169,8 +181,19 @@ public class PlayerController : NetworkBehaviour
         float z = inputZ;
 
         if(grounded){
+            animator.SetBool("isGrounded", true);
+
             // Movement direction relative to facing direction
             Vector3 moveDir = (transform.forward * z + transform.right * x).normalized;
+
+            if (moveDir == Vector3.zero)
+            {
+                animator.SetBool("isWalk", false);
+            }
+            else
+            {
+                animator.SetBool("isWalk", true);
+            }
 
             // Apply movement force continuously
             rig.AddForce(moveDir * moveForce, ForceMode.Force);
@@ -195,7 +218,18 @@ public class PlayerController : NetworkBehaviour
             }
         }
         else{
+            animator.SetBool("isGrounded", false);
+
             Vector3 moveDir = (transform.forward * z + transform.right * x).normalized;
+
+            if (moveDir == Vector3.zero)
+            {
+                animator.SetBool("isWalk", false);
+            }
+            else
+            {
+                animator.SetBool("isWalk", true);
+            }
 
             // Apply movement force continuously
             rig.AddForce(moveDir * moveForce * spaceMovementFactor, ForceMode.Force);
@@ -218,8 +252,6 @@ public class PlayerController : NetworkBehaviour
         if (superJumpPressed){
             rig.AddForce(-gravityDirection * jumpForce * 100, ForceMode.Impulse);
         }
-
-        
 
         jumpPressed = false;
         gravityUpdated = false;
