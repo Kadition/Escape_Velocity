@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class PlayerLook : NetworkBehaviour
 {
-    public const float mouseSensitivity = 300f;
+    public float mouseSensitivity = 300f;
     [SerializeField] private PlayerController player;
 
     void Start()

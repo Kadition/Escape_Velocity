@@ -52,10 +52,7 @@ public class VoiceRelay : MonoBehaviour
 
     void OnDestroy()
     {
-        if (SteamClient.IsValid)
-        {
-            SteamUser.VoiceRecord = false;
-        }
+        SteamUser.VoiceRecord = false;
 
         // dont do these on menu, and maybe start recording voice even in menu lol
         stream.Close();

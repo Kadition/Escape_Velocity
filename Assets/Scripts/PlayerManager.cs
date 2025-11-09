@@ -1,13 +1,10 @@
 using Unity.Netcode;
 using UnityEngine;
 using Steamworks;
-using UnityEngine.InputSystem;
 
 public class PlayerManager : NetworkBehaviour
 {
     public ulong steam_id;
-
-    const float velocityModifierConstant = 2.5f;
 
     [SerializeField] SpringJointMaker springJointMaker;
 
@@ -17,23 +14,13 @@ public class PlayerManager : NetworkBehaviour
 
     ulong heldPlayerId; // steam id
 
-    // [SerializeField] Rigidbody rb;
+    [SerializeField] Rigidbody rb;
 
-    // [SerializeField] Rigidbody handRigidbody;
-    // [SerializeField] Rigidbody connectedRigidbody;
-
-    [SerializeField] private Animator animator;
-
-    [SerializeField] private InputActionReference wasd;
+    [SerializeField] Rigidbody handRigidbody;
+    [SerializeField] Rigidbody connectedRigidbody;
 
     // ! use this for what the other person should copy
-    [HideInInspector]
-    public Transform connectedPosition;
-
-    [HideInInspector]
-    public Rigidbody connectedRigidbody;
-
-    // [SerializeField] GameObject playerModel;
+    [SerializeField] public Transform connectedPosition;
 
     void Start()
     {
@@ -42,24 +29,11 @@ public class PlayerManager : NetworkBehaviour
         {
             Debug.Log("satrtatrar");
             updateIDRpc(SteamClient.SteamId);
-            // playerModel.SetActive(false);
         }
         else
         {
             requestIDRpc();
         }
-
-        foreach (GameObject joint in GameObject.FindGameObjectsWithTag("Joint"))
-        {
-            if (joint.GetComponent<NetworkBehaviour>().OwnerClientId == OwnerClientId)
-            {
-                connectedPosition = joint.transform;
-                connectedRigidbody = joint.GetComponent<Rigidbody>();
-                return;
-            }
-        }
-
-        Debug.LogError("uhoh");
     }
 
     [Rpc(SendTo.Everyone)]
@@ -106,12 +80,7 @@ public class PlayerManager : NetworkBehaviour
             if (holdingPlayer)
             {
                 holdingPlayer = false;
-
-                gameObject.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.None;
-
-                gameObject.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeRotation;
-
-                OnReleasePlayerRpc(heldPlayerId, transform.position + transform.forward * 1.5f, transform.forward, connectedRigidbody.linearVelocity.magnitude);
+                OnReleasePlayerRpc(heldPlayerId);
             }
             else
             {
@@ -127,44 +96,16 @@ public class PlayerManager : NetworkBehaviour
                         holdingPlayer = true;
                         connectedPosition.position = player.transform.position;
                         springJointMaker.MakeJoint();
-                        heldPlayerId = player.GetComponent<PlayerManager>().steam_id;
-
-                        gameObject.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
-
-                        OnClickPlayerRpc(player.GetComponent<PlayerManager>().steam_id);
+                        OnClickPlayerRpc(player.GetComponent<PlayerManager>().steam_id, SteamClient.SteamId);
                         break;
                     }
                 }
             }
         }
-
-        if(IsOwner)
-        {
-            if (holdingPlayer)
-            {
-                animator.SetBool("isGrab", true);
-
-                float spin = wasd.action.ReadValue<Vector2>().x;
-
-                Debug.Log("spin: " + spin);
-
-                // Use player-relative UP, not world up
-                Vector3 playerUp = -transform.up;
-                transform.Rotate(playerUp, spin * Time.deltaTime * 500f, Space.World);
-
-                return;
-            }
-            else
-            {
-                Debug.Log("nah fam");
-                animator.SetBool("isGrab", false);
-            }
-                
-        }
     }
 
     [Rpc(SendTo.Everyone)]
-    public void OnClickPlayerRpc(ulong id)
+    public void OnClickPlayerRpc(ulong id, ulong my_id)
     {
         springJointMaker.attached = true;
 
@@ -180,10 +121,22 @@ public class PlayerManager : NetworkBehaviour
 
                 PlayerManager playerManager = player.GetComponent<PlayerManager>();
 
-                if (playerManager.steam_id == id)
+                if (playerManager.steam_id == my_id)
                 {
-                    player.GetComponent<PlayerController>().overrideMovement = true;
-                    player.GetComponent<PlayerController>().placeToTransform = connectedPosition;
+                    foreach (GameObject playerme in playerlist)
+                    {
+                        if (playerme == gameObject)
+                        {
+                            continue;
+                        }
+
+                        if (playerme.GetComponent<PlayerManager>().steam_id == SteamClient.SteamId)
+                        {
+                            playerme.GetComponent<PlayerController>().overrideMovement = true;
+                            playerme.GetComponent<PlayerController>().placeToTransform = connectedPosition;
+                            break;
+                        }
+                    }
                     break;
                 }
             }
@@ -191,7 +144,7 @@ public class PlayerManager : NetworkBehaviour
     }
 
     [Rpc(SendTo.Everyone)]
-    public void OnReleasePlayerRpc(ulong id, Vector3 position, Vector3 velocity, float magnitude)
+    public void OnReleasePlayerRpc(ulong id)
     {
         springJointMaker.attached = false;
 
@@ -202,8 +155,6 @@ public class PlayerManager : NetworkBehaviour
             {
                 if (player.GetComponent<PlayerManager>().steam_id == SteamClient.SteamId)
                 {
-                    player.transform.position = position;
-                    player.GetComponent<Rigidbody>().linearVelocity = velocity * magnitude * velocityModifierConstant;
                     player.GetComponent<PlayerController>().overrideMovement = false;
                 }
             }

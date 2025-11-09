@@ -190,42 +190,20 @@ public class GameNetworkManager : MonoBehaviour
 
     IEnumerator clientWait()
     {
-    while(NetworkManager.Singleton == null || !NetworkManager.Singleton.IsListening || PlayerNetworkManager.instance == null)
-        yield return null;
+        while(NetworkManager.Singleton == null || !NetworkManager.Singleton.IsListening || PlayerNetworkManager.instance == null)
+        {
+            yield return null;
+        }
 
-    bool connected = false;
-    System.Action<ulong> handler = null;
-    handler = (id) => {
-        if (id == NetworkManager.Singleton.LocalClientId)
-            connected = true;
-    };
-    NetworkManager.Singleton.OnClientConnectedCallback += handler;
+        yield return new WaitForSeconds(10);
 
-    while (!connected)
-        yield return null;
+        if(PlayerNetworkManager.instance == null)
+        {
+            Debug.Log("ASDASFJASGFNMSF");
+        }
 
-    // Unsubscribe to prevent memory leak
-    NetworkManager.Singleton.OnClientConnectedCallback -= handler;
-
-    PlayerNetworkManager.instance.spawnMeInCoachRpc(NetworkManager.Singleton.LocalClientId, SteamClient.SteamId);
+        PlayerNetworkManager.instance.spawnMeInCoachRpc(NetworkManager.Singleton.LocalClientId, SteamClient.SteamId);
     }
-
-    // IEnumerator clientWait()
-    // {
-    //     while(NetworkManager.Singleton == null || !NetworkManager.Singleton.IsListening || PlayerNetworkManager.instance == null)
-    //     {
-    //         yield return null;
-    //     }
-
-    //     yield return new WaitForSeconds(1);
-
-    //     if (PlayerNetworkManager.instance == null)
-    //     {
-    //         Debug.Log("ASDASFJASGFNMSF");
-    //     }
-
-    //     PlayerNetworkManager.instance.spawnMeInCoachRpc(NetworkManager.Singleton.LocalClientId, SteamClient.SteamId);
-    // }
 
     public void Disconnected()
     {
@@ -261,11 +239,6 @@ public class GameNetworkManager : MonoBehaviour
     private void Singleton_OnClientConnectedCallback(ulong _clientId)
     {
         Debug.Log($"Client has connected: {_clientId}");
-    }
-
-    public void Quit(){
-        Application.Quit();
-        return;
     }
 
     private void Singleton_OnClientDisconnectCallback(ulong _clientId)
