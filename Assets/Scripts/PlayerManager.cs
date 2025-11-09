@@ -26,6 +26,8 @@ public class PlayerManager : NetworkBehaviour
 
     public Rigidbody connectedRigidbody;
 
+    [SerializeField] GameObject playerModel;
+
     void Start()
     {
         Debug.Log("satrtatrar2");
@@ -33,6 +35,7 @@ public class PlayerManager : NetworkBehaviour
         {
             Debug.Log("satrtatrar");
             updateIDRpc(SteamClient.SteamId);
+            playerModel.SetActive(false);
         }
         else
         {
