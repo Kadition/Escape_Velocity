@@ -1,12 +1,13 @@
 using Unity.Netcode;
 using UnityEngine;
 using Steamworks;
+using UnityEngine.InputSystem;
 
 public class PlayerManager : NetworkBehaviour
 {
     public ulong steam_id;
 
-    const float velocityModifierConstant = 1;
+    const float velocityModifierConstant = 2.5f;
 
     [SerializeField] SpringJointMaker springJointMaker;
 
@@ -20,6 +21,10 @@ public class PlayerManager : NetworkBehaviour
 
     // [SerializeField] Rigidbody handRigidbody;
     // [SerializeField] Rigidbody connectedRigidbody;
+
+    [SerializeField] private Animator animator;
+
+    [SerializeField] private InputActionReference wasd;
 
     // ! use this for what the other person should copy
     [HideInInspector]
@@ -131,6 +136,29 @@ public class PlayerManager : NetworkBehaviour
                     }
                 }
             }
+        }
+
+        if(IsOwner)
+        {
+            if (holdingPlayer)
+            {
+                animator.SetBool("isGrab", true);
+
+                float spin = wasd.action.ReadValue<Vector2>().x;
+
+                Debug.Log("spin: " + spin);
+
+                // Use player-relative UP, not world up
+                Vector3 playerUp = -transform.up;
+                transform.Rotate(playerUp, spin * Time.deltaTime * 500f, Space.World);
+
+                return;
+            }
+            else
+            {
+                animator.SetBool("isGrab", false);
+            }
+                
         }
     }
 

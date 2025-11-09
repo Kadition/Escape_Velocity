@@ -13,7 +13,6 @@ public class PlayerController : NetworkBehaviour
 
     [SerializeField] private Animator animator;
 
-    [SerializeField] private InputActionReference wasd;
     public float moveForce = 20f;
     public float jumpForce = 6f;
 
@@ -105,17 +104,7 @@ public class PlayerController : NetworkBehaviour
 
         if (overrideMovement)
         {
-            animator.SetBool("isGrab", true);
-
             transform.position = placeToTransform.position;
-
-            float spin = wasd.action.ReadValue<Vector2>().x;
-
-            Debug.Log("spin: " + spin);
-
-            // Use player-relative UP, not world up
-            Vector3 playerUp = -transform.up;
-            transform.Rotate(playerUp, spin * Time.deltaTime * 500f, Space.World);
 
             return;
         }
