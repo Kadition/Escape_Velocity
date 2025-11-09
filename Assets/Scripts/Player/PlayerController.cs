@@ -111,6 +111,8 @@ public class PlayerController : NetworkBehaviour
 
             float spin = wasd.action.ReadValue<Vector2>().x;
 
+            Debug.Log("spin: " + spin);
+
             // Use player-relative UP, not world up
             Vector3 playerUp = -transform.up;
             transform.Rotate(playerUp, spin * Time.deltaTime * 500f, Space.World);

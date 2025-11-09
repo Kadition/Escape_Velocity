@@ -6,7 +6,7 @@ public class PlayerManager : NetworkBehaviour
 {
     public ulong steam_id;
 
-    const float velocityModifierConstant = 5;
+    const float velocityModifierConstant = 1;
 
     [SerializeField] SpringJointMaker springJointMaker;
 
