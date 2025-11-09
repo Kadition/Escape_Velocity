@@ -10,6 +10,7 @@ public class PlaceRopeEndPoints : MonoBehaviour
     [SerializeField] GameObject ropeParentPrefab;
     [SerializeField] GameObject firstRopeEnd;
     [SerializeField] GameObject secondRopeEnd;
+    Vector3 zOffset = new Vector3(0f, 0f, 1f);
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -26,23 +27,26 @@ public class PlaceRopeEndPoints : MonoBehaviour
     {
         if(anotherEndExists == false)
         {
+            
             if (Input.GetKeyDown(KeyCode.R))
             {
-                GameObject ropeEnd = Instantiate(ropeEndPrefab, transform.position, Quaternion.identity);
+                GameObject ropeEnd = Instantiate(ropeEndPrefab, transform.position + zOffset, Quaternion.identity);
                 firstRopeEnd = ropeEnd;
                 anotherEndExists = true;
             }
         } else if(anotherEndExists == true)
-        {
+        {   
             if (Input.GetKeyDown(KeyCode.R))
             {
                 //place second rope end
-                GameObject ropeEnd = Instantiate(ropeEndPrefab, transform.position, Quaternion.identity);
+                GameObject ropeParent = Instantiate(ropeParentPrefab);
+                GameObject ropeEnd = Instantiate(ropeEndPrefab, transform.position + zOffset, Quaternion.identity);
                 secondRopeEnd = ropeEnd;
+                secondRopeEnd.transform.parent = ropeParent.transform;
                 anotherEndExists = false;
                 //create rope parent and set both rope ends as children
-                GameObject ropeParent = Instantiate(ropeParentPrefab);
-                secondRopeEnd.transform.parent = ropeParent.transform;
+                
+                
                 firstRopeEnd.transform.parent = ropeParent.transform;
                 //get ConnectPoints script and set near and far endpoints
                 var connectPoints = ropeParent.GetComponent<ConnectPoints>();

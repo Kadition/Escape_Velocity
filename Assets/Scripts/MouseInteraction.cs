@@ -35,7 +35,9 @@ public class MouseInteraction : MonoBehaviour
         if (Physics.Raycast(ray, out RaycastHit hit, 2f))
         {
             GameObject hitObj = hit.collider.gameObject;
-            Interactable interactable = hitObj.GetComponent<Interactable>();
+            Debug.Log("Hit object: " + hitObj.name);
+            //Interactable interactable = hitObj.GetComponent<Interactable>();
+            var interactable = hitObj.GetComponent(typeof(Interactable)) as Interactable;
 
             if (interactable != null)
             {
@@ -43,6 +45,13 @@ public class MouseInteraction : MonoBehaviour
                 interactableImage.gameObject.SetActive(true);
                 interactableText.gameObject.SetActive(true);
                 Debug.Log("Hovering over interactable: " + obj.name);
+
+                // Interact on right-click
+                if (Input.GetMouseButtonDown(1))
+                {
+                    Debug.Log("Right-clicked on interactable: " + obj.name);
+                    interactable.Interact(gameObject);
+                }
             }
             else
             {
@@ -52,16 +61,6 @@ public class MouseInteraction : MonoBehaviour
         else
         {
             ClearUI();
-        }
-
-        // Interact on right-click
-        if (Input.GetMouseButtonDown(1) && obj != null)
-        {
-            Interactable interactable = obj.GetComponent<Interactable>();
-            if (interactable != null)
-            {
-                interactable.interact();
-            }
         }
     }
 
