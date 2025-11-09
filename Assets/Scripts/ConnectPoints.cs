@@ -6,14 +6,14 @@ using UnityEngine;
 // this script will handle connecting two rope endpoints
 public class ConnectPoints : MonoBehaviour
 {
-    [SerializeField] GameObject nearEnd; //near endpoint of the rope
-    [SerializeField] GameObject farEnd;
+    [SerializeField] public GameObject nearEnd; //near endpoint of the rope
+    [SerializeField] public GameObject farEnd;
     [SerializeField] GameObject ropeSegment;
     [SerializeField] float segmentLength = 0.1f;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        StartCoroutine(ConnectRopeEnds());
+        
     }
 
     // Update is called once per frame
