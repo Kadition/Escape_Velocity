@@ -673,6 +673,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::VoiceNetworking
   ShowTopMostFoldoutHeaderGroup: 1
   playerPrefab: {fileID: 7183096211676564755, guid: 9c604a11d391a3140a4d34d0eccb269a, type: 3}
+  connectPrefab: {fileID: 2567612836663916389, guid: f290eba66b5e43b44bf23e2435c65761, type: 3}
 --- !u!4 &521836231
 Transform:
   m_ObjectHideFlags: 0
@@ -1460,7 +1461,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 21300000, guid: 917c07013b5d82243a3b9cd5349e96a7, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
