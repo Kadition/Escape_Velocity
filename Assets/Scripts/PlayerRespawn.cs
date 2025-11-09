@@ -6,14 +6,13 @@ using UnityEngine.UI;
 // This script handles player respawning at a designated point when the Backspace key is pressed
 public class PlayerRespawn : MonoBehaviour
 {
-    [SerializeField] private AudioClip wilhelmScream;
+    [SerializeField] private AudioClip[] wilhelmScream;
     [SerializeField] Canvas blackCanvasPrefab;
     Canvas blackCanvas;
     [SerializeField] Image blackImagePrefab;
     Image blackImage;
     [SerializeField] private float fadeSpeed;
-    [SerializeField] private Vector3 respawnPoint = new Vector3(0, 1, 0);
-    [SerializeField] private float respawnDelay = 2f;
+    private Vector3 respawnPoint = new Vector3(0, 102, 0);
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -66,7 +65,7 @@ public class PlayerRespawn : MonoBehaviour
 
         if (wilhelmScream != null)
         {
-            SoundFXManager.instance.PlaySoundFXCLip(wilhelmScream, transform, 0.5f);
+            SoundFXManager.instance.PlaySoundFXCLip(wilhelmScream[Random.Range(0, wilhelmScream.Length)], transform, 0.5f);
         }
 
         // Hold black screen

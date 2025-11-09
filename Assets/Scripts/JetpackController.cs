@@ -6,7 +6,6 @@ public class JetpackController : MonoBehaviour
     private bool jetpackIsAvailable = true;
     [SerializeField] float lateralVelocity = 1f;
     [SerializeField] float groundCheckDistance = 1.1f;
-    [SerializeField] private bool isGrounded;
     private Rigidbody playerRb;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -22,12 +21,7 @@ public class JetpackController : MonoBehaviour
         RaycastHit hit;
         if (Physics.Raycast(transform.position, Vector3.down, out hit, groundCheckDistance))
         {
-            isGrounded = true;
             jetpackIsAvailable = true; // Reset jetpack when grounded
-        }
-        else
-        {
-            isGrounded = false;
         }
     }
 
