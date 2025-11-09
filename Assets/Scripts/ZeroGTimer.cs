@@ -62,7 +62,7 @@ public class ZeroGTimer : NetworkBehaviour
         {
             return;
         }
-        if (pC.getGravityVector() == pC.getNormGravity())
+        if (0f == pC.getNormGravity().magnitude)
         {
             if (deathCoroutine == null)
             {
