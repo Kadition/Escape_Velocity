@@ -519,7 +519,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9769927aeb5bd420d9030d810a5b5899, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
-  maxAcc: 50
+  maxAcc: 10
   dropOff: 0.5
   affectRadiusFactor: 1.5
   visualRadius: 0
