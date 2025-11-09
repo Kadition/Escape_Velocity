@@ -53,7 +53,7 @@ public class ZeroGTimer : MonoBehaviour
 
     void Update()
     {
-        if (pC.gravityVector == pC.NormGravity)
+        if (pC.getGravityVector() == pC.getNormGravity())
         {
             if (deathCoroutine == null)
             {

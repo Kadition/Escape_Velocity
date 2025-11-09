@@ -263,6 +263,11 @@ public class GameNetworkManager : MonoBehaviour
         Debug.Log($"Client has connected: {_clientId}");
     }
 
+    public void Quit(){
+        Application.Quit();
+        return;
+    }
+
     private void Singleton_OnClientDisconnectCallback(ulong _clientId)
     {
         NetworkManager.Singleton.OnClientDisconnectCallback -= Singleton_OnClientDisconnectCallback;

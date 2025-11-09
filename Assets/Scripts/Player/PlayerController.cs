@@ -3,22 +3,16 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-//funk way 
-/* grav vector = normGrav
-if(no planet saya hey use grav)
-then gravVector = normGrav
-{is in space influence}*/
 public class PlayerController : NetworkBehaviour
 {
     public bool grounded;
-    public Vector3 NormGravity = new Vector3(0f, 0f, 0f);
-    public Vector3 gravityVector;
+    private Vector3 NormGravity = new Vector3(0f, 0f, 0f);
+    private Vector3 gravityVector;
     private bool gravityUpdated;
     [SerializeField] private Rigidbody rig;
 
     [SerializeField] private Animator animator;
 
-    [SerializeField] private InputActionReference wasd;
     public float moveForce = 20f;
     public float jumpForce = 6f;
 
@@ -36,6 +30,14 @@ public class PlayerController : NetworkBehaviour
     public Transform placeToTransform;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
+
+    public Vector3 getNormGravity(){
+        return NormGravity;
+    }
+
+    public Vector3 getGravityVector(){
+        return gravityVector;
+    }
     void Start()
     {
         if (!IsOwner)
@@ -52,14 +54,13 @@ public class PlayerController : NetworkBehaviour
         planetList = GameObject.FindGameObjectsWithTag("Planet");
     }
 
-    public void updateGravity(Vector3 g)
-    {
-
+    public void updateGravity(Vector3 g){
+        
         if (!IsOwner || overrideMovement)
         {
             return;
         }
-
+        
         gravityVector = g;
         gravityUpdated = true;
     }
@@ -71,13 +72,13 @@ public class PlayerController : NetworkBehaviour
         {
             return;
         }
-
+        
         grounded = false;
 
         foreach (var contact in collision.contacts)
         {
             // If the contact normal points roughly opposite gravity direction
-            if (Vector3.Dot(contact.normal, -gravityVector.normalized) > 0.6f)
+            if (Vector3.Dot(contact.normal, -gravityVector.normalized) > 0.6f) 
             {
                 grounded = true;
                 break;
@@ -91,7 +92,7 @@ public class PlayerController : NetworkBehaviour
         {
             return;
         }
-
+        
         grounded = false;
     }
 
@@ -111,15 +112,7 @@ public class PlayerController : NetworkBehaviour
 
         if (overrideMovement)
         {
-            animator.SetBool("isGrab", true);
-
             transform.position = placeToTransform.position;
-
-            float spin = wasd.action.ReadValue<Vector2>().x;
-
-            // Use player-relative UP, not world up
-            Vector3 playerUp = -transform.up;
-            transform.Rotate(playerUp, spin, Space.World);
 
             return;
         }
@@ -153,11 +146,11 @@ public class PlayerController : NetworkBehaviour
 
             float distance = Vector3.Distance(transform.position, planet.transform.position);
 
-            if (distance <= planetScript.visualRadius * planetScript.affectRadiusFactor)
+            if(distance <= planetScript.visualRadius * planetScript.affectRadiusFactor)
             {
                 // Make a new vector that is a rotated version of gravityVector
 
-                Vector3 g = (planet.transform.position - transform.position).normalized * Mathf.Lerp(planetScript.maxAcc, planetScript.maxAcc * planetScript.dropOff, (distance - planetScript.visualRadius) / (planetScript.visualRadius * planetScript.affectRadiusFactor));
+                Vector3 g = (planet.transform.position - transform.position).normalized * Mathf.Lerp(planetScript.maxAcc, planetScript.maxAcc*planetScript.dropOff, (distance - planetScript.visualRadius) / (planetScript.visualRadius * planetScript.affectRadiusFactor));
 
                 updateGravity(g);
 
@@ -212,7 +205,7 @@ public class PlayerController : NetworkBehaviour
             // Friction uwu
             if (coefFriction != null)
             {
-                rig.AddForce(-rig.linearVelocity * ((float)coefFriction), ForceMode.Force);
+                rig.AddForce(-rig.linearVelocity * ((float) coefFriction), ForceMode.Force);
             }
 
             // Jump against gravity
@@ -221,8 +214,7 @@ public class PlayerController : NetworkBehaviour
                 rig.AddForce(-gravityDirection * jumpForce, ForceMode.Impulse);
             }
 
-            if (rig.linearVelocity.magnitude > maxGroundedVelocity)
-            {
+            if(rig.linearVelocity.magnitude > maxGroundedVelocity){
                 rig.linearVelocity = rig.linearVelocity * (maxGroundedVelocity / rig.linearVelocity.magnitude);
             }
         }
@@ -249,15 +241,17 @@ public class PlayerController : NetworkBehaviour
             // Jump against gravity
             if (Input.GetKey(KeyCode.C) && !Input.GetKey(KeyCode.Space))// && grounded)
             {
+                // MAKE THIS NOT AGAINST GRAVITY
                 rig.AddForce(-gravityDirection * jumpForce * spaceMovementFactor, ForceMode.Force);
             }
-            else if (Input.GetKey(KeyCode.Space) && !Input.GetKey(KeyCode.C))
+            else if(Input.GetKey(KeyCode.Space) && !Input.GetKey(KeyCode.C))
             {
+                //ALSO MAKE THIS NOT AGAINST GRAVITY
                 rig.AddForce(gravityDirection * jumpForce * spaceMovementFactor, ForceMode.Force); 
             }
         }
         if (superJumpPressed){
-            rig.AddForce(-gravityDirection * jumpForce * 200, ForceMode.Impulse);
+            rig.AddForce(-gravityDirection * jumpForce * 100, ForceMode.Impulse);
         }
 
         jumpPressed = false;
