@@ -1,8 +1,9 @@
+using Unity.Netcode;
 using UnityEngine;
 
 //attached to the player game object
 //this script places the endpoints of the rope at the player's position on R press, also detects if another endpoint already exists.
-public class PlaceRopeEndPoints : MonoBehaviour
+public class PlaceRopeEndPoints : NetworkBehaviour
 {
 
     [SerializeField] bool anotherEndExists;
@@ -14,6 +15,10 @@ public class PlaceRopeEndPoints : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        if(!IsOwner)
+        {
+            return;
+        }
         anotherEndExists = false;
     }
 
@@ -25,36 +30,52 @@ public class PlaceRopeEndPoints : MonoBehaviour
     and connect them using ConnectPoints script*/
     void Update()
     {
-        if(anotherEndExists == false)
+        if (!IsOwner)
         {
-            
+            return;
+        }
+        if (anotherEndExists == false)
+        {
             if (Input.GetKeyDown(KeyCode.R))
             {
-                GameObject ropeEnd = Instantiate(ropeEndPrefab, transform.position + zOffset, Quaternion.identity);
-                firstRopeEnd = ropeEnd;
-                anotherEndExists = true;
-            }
-        } else if(anotherEndExists == true)
-        {   
-            if (Input.GetKeyDown(KeyCode.R))
-            {
-                //place second rope end
-                GameObject ropeParent = Instantiate(ropeParentPrefab);
-                GameObject ropeEnd = Instantiate(ropeEndPrefab, transform.position + zOffset, Quaternion.identity);
-                secondRopeEnd = ropeEnd;
-                secondRopeEnd.transform.parent = ropeParent.transform;
-                anotherEndExists = false;
-                //create rope parent and set both rope ends as children
-                
-                
-                firstRopeEnd.transform.parent = ropeParent.transform;
-                //get ConnectPoints script and set near and far endpoints
-                var connectPoints = ropeParent.GetComponent<ConnectPoints>();
-                connectPoints.nearEnd = firstRopeEnd;
-                connectPoints.farEnd = secondRopeEnd;
-                //Connect the rope ends
-                connectPoints.StartCoroutine(connectPoints.ConnectRopeEnds());
+                oneJonasRpc();
             }
         }
+        else if (anotherEndExists == true)
+        {
+            if (Input.GetKeyDown(KeyCode.R))
+            {
+                twoJonasRpc();
+            }
+        }
+    }
+
+    [Rpc(SendTo.Everyone)]
+    public void oneJonasRpc()
+    {
+        GameObject ropeEnd = Instantiate(ropeEndPrefab, transform.position + zOffset, Quaternion.identity);
+        firstRopeEnd = ropeEnd;
+        anotherEndExists = true;
+    }
+    
+    [Rpc(SendTo.Everyone)]
+    public void twoJonasRpc()
+    {
+        //place second rope end
+        GameObject ropeParent = Instantiate(ropeParentPrefab);
+        GameObject ropeEnd = Instantiate(ropeEndPrefab, transform.position + zOffset, Quaternion.identity);
+        secondRopeEnd = ropeEnd;
+        secondRopeEnd.transform.parent = ropeParent.transform;
+        anotherEndExists = false;
+        //create rope parent and set both rope ends as children
+
+
+        firstRopeEnd.transform.parent = ropeParent.transform;
+        //get ConnectPoints script and set near and far endpoints
+        var connectPoints = ropeParent.GetComponent<ConnectPoints>();
+        connectPoints.nearEnd = firstRopeEnd;
+        connectPoints.farEnd = secondRopeEnd;
+        //Connect the rope ends
+        connectPoints.StartCoroutine(connectPoints.ConnectRopeEnds());
     }
 }

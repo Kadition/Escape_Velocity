@@ -1,10 +1,11 @@
 using System.Collections;
+using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.UI;
 
 //Attached to the Player GameObject
 // This script handles player respawning at a designated point when the Backspace key is pressed
-public class PlayerRespawn : MonoBehaviour
+public class PlayerRespawn : NetworkBehaviour
 {
     [SerializeField] private AudioClip[] wilhelmScream;
     [SerializeField] Canvas blackCanvasPrefab;
@@ -16,6 +17,10 @@ public class PlayerRespawn : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        if(!IsOwner)
+        {
+            return;
+        }
         blackCanvas = Instantiate(blackCanvasPrefab, Vector3.zero, Quaternion.identity);
         blackImage = Instantiate(blackImagePrefab, blackCanvas.transform);
         blackCanvas.enabled = false;
@@ -25,6 +30,10 @@ public class PlayerRespawn : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if(!IsOwner)
+        {
+            return;
+        }
         if (Input.GetKeyDown(KeyCode.Backspace))
         {
             RespawnPlayer();

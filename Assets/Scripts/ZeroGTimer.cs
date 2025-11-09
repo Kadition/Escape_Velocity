@@ -36,8 +36,9 @@ public class ZeroGTimer : MonoBehaviour
 using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
+using Unity.Netcode;
 
-public class ZeroGTimer : MonoBehaviour
+public class ZeroGTimer : NetworkBehaviour
 {
     PlayerController pC;
     [SerializeField] float timerLength = 10f;
@@ -47,12 +48,20 @@ public class ZeroGTimer : MonoBehaviour
 
     void Start()
     {
+        if(!IsOwner)
+        {
+            return;
+        }
         pC = gameObject.GetComponent<PlayerController>();
         redCanvas.enabled = false;
     }
 
     void Update()
     {
+        if(!IsOwner)
+        {
+            return;
+        }
         if (pC.getGravityVector() == pC.getNormGravity())
         {
             if (deathCoroutine == null)
