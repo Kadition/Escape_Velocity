@@ -1,6 +1,7 @@
+using Unity.Netcode;
 using UnityEngine;
 
-public class SpringJointMaker : MonoBehaviour
+public class SpringJointMaker : NetworkBehaviour
 {
     SpringJoint springJoint;
 
@@ -9,13 +10,28 @@ public class SpringJointMaker : MonoBehaviour
 
     public GameObject rope;
 
-    public GameObject connectedPosition;
+    private GameObject connectedPosition;
 
-    public Rigidbody connectedRigidbody;
+    private Rigidbody connectedRigidbody;
 
     public bool attached = false;
 
     [SerializeField] private GameObject handsLocation;
+
+    void Start()
+    {
+        foreach (GameObject joint in GameObject.FindGameObjectsWithTag("Joint"))
+        {
+            if (joint.GetComponent<NetworkBehaviour>().OwnerClientId == OwnerClientId)
+            {
+                connectedPosition = joint;
+                connectedRigidbody = joint.GetComponent<Rigidbody>();
+                return;
+            }
+        }
+
+        Debug.LogError("uhoh");
+    }
 
     void Update()
     {

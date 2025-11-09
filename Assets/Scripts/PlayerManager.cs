@@ -34,6 +34,17 @@ public class PlayerManager : NetworkBehaviour
         {
             requestIDRpc();
         }
+
+        foreach (GameObject joint in GameObject.FindGameObjectsWithTag("Joint"))
+        {
+            if (joint.GetComponent<NetworkBehaviour>().OwnerClientId == OwnerClientId)
+            {
+                connectedPosition = joint.transform;
+                return;
+            }
+        }
+
+        Debug.LogError("uhoh");
     }
 
     [Rpc(SendTo.Everyone)]
@@ -96,6 +107,7 @@ public class PlayerManager : NetworkBehaviour
                         holdingPlayer = true;
                         connectedPosition.position = player.transform.position;
                         springJointMaker.MakeJoint();
+                        heldPlayerId = player.GetComponent<PlayerManager>().steam_id;
                         OnClickPlayerRpc(player.GetComponent<PlayerManager>().steam_id, SteamClient.SteamId);
                         break;
                     }

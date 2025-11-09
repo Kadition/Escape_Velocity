@@ -275,7 +275,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 1326372182
+  GlobalObjectIdHash: 3403041415
   InScenePlacedSourceGlobalObjectIdHash: 0
   DeferredDespawnTick: 0
   Ownership: 1
@@ -432,9 +432,6 @@ MonoBehaviour:
   steam_id: 0
   springJointMaker: {fileID: 4446998762717341229}
   handsPosition: {fileID: 2666911934580109959}
-  rb: {fileID: 223971613767819608}
-  handRigidbody: {fileID: 7485559531041035850}
-  connectedRigidbody: {fileID: 0}
   connectedPosition: {fileID: 0}
 --- !u!114 &4446998762717341229
 MonoBehaviour:
