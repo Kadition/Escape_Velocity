@@ -8,14 +8,16 @@ public class PlanetScript : MonoBehaviour
     public float visualRadius;
     public float coefFriction = 1.5f;
 
+    private const float KADENBAD = 12f;
+
     void Start()
     {
-        //visualRadius = transform.localScale.x * 0.5f; // Bang
-        MeshFilter mf = GetComponent<MeshFilter>();
-        Mesh mesh = mf.sharedMesh;
+        visualRadius = transform.localScale.x * 0.5f * KADENBAD; // Bang
+        // MeshFilter mf = GetComponent<MeshFilter>();
+        // Mesh mesh = mf.sharedMesh;
 
-        // Mesh bounds are in local space, so multiply by scale
-        Vector3 scaledExtents = Vector3.Scale(mesh.bounds.extents, transform.lossyScale);
-        visualRadius = scaledExtents.x; // x = radius because it's a sphere 
+        // // Mesh bounds are in local space, so multiply by scale
+        // Vector3 scaledExtents = Vector3.Scale(mesh.bounds.extents, transform.lossyScale);
+        // visualRadius = scaledExtents.x; // x = radius because it's a sphere 
     }
 }

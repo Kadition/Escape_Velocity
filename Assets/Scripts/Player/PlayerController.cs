@@ -85,6 +85,8 @@ public class PlayerController : NetworkBehaviour
 
     bool jumpPressed = false;
 
+    bool superJumpPressed = false;
+
     void Update()
     {
         if(!IsOwner)
@@ -97,6 +99,8 @@ public class PlayerController : NetworkBehaviour
 
         if (Input.GetKeyDown(KeyCode.Space))
             jumpPressed = true;
+        if (Input.GetKeyDown(KeyCode.G))
+            superJumpPressed = true;
     }
 
     void FixedUpdate()
@@ -185,18 +189,24 @@ public class PlayerController : NetworkBehaviour
             // Jump against gravity
             if (Input.GetKey(KeyCode.C) && !Input.GetKey(KeyCode.Space))// && grounded)
             {
-                rig.AddForce(gravityDirection * jumpForce * spaceMovementFactor, ForceMode.Force);
+                // MAKE THIS NOT AGAINST GRAVITY
+                rig.AddForce(-gravityDirection * jumpForce * spaceMovementFactor, ForceMode.Force);
             }
             else if(Input.GetKey(KeyCode.Space) && !Input.GetKey(KeyCode.C))
             {
-                rig.AddForce(-gravityDirection * jumpForce * spaceMovementFactor, ForceMode.Force); 
+                //ALSO MAKE THIS NOT AGAINST GRAVITY
+                rig.AddForce(gravityDirection * jumpForce * spaceMovementFactor, ForceMode.Force); 
             }
+        }
+        if (superJumpPressed){
+            rig.AddForce(-gravityDirection * jumpForce * 100, ForceMode.Impulse);
         }
 
         
 
         jumpPressed = false;
         gravityUpdated = false;
+        superJumpPressed = false;
         lastGravityDir = gravityDirection;
     }
 }
