@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using Unity.VisualScripting;
 
 // Attached to each rope end GameObject
 // Moves the player smoothly along the rope when interacted with
@@ -17,9 +18,12 @@ public class RopeTeleporter : MonoBehaviour, Interactable
 
     void Start()
     {
-        ropeParent = transform.parent.gameObject;
-
-        if (ropeParent.transform.childCount >= 2)
+        if (transform.parent.gameObject != null)
+        {
+            ropeParent = transform.parent.gameObject;
+        }
+        
+        if (transform.parent.gameObject != null && ropeParent.transform.childCount >= 2)
         {
             nearEnd = ropeParent.transform.GetChild(0);
             farEnd = ropeParent.transform.GetChild(1);

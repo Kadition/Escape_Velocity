@@ -35,7 +35,6 @@ public class MouseInteraction : MonoBehaviour
         if (Physics.Raycast(ray, out RaycastHit hit, 2f))
         {
             GameObject hitObj = hit.collider.gameObject;
-            Debug.Log("Hit object: " + hitObj.name);
             //Interactable interactable = hitObj.GetComponent<Interactable>();
             var interactable = hitObj.GetComponent(typeof(Interactable)) as Interactable;
 
@@ -44,7 +43,6 @@ public class MouseInteraction : MonoBehaviour
                 obj = hitObj;
                 interactableImage.gameObject.SetActive(true);
                 interactableText.gameObject.SetActive(true);
-                Debug.Log("Hovering over interactable: " + obj.name);
 
                 // Interact on right-click
                 if (Input.GetMouseButtonDown(1))

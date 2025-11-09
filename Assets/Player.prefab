@@ -292,7 +292,6 @@ GameObject:
   - component: {fileID: -5002768015397579773}
   - component: {fileID: -5770681846923177648}
   - component: {fileID: 6399910444277193415}
-  - component: {fileID: 4238406705068776974}
   - component: {fileID: 2872625917057936138}
   - component: {fileID: 4446998762717341229}
   - component: {fileID: 7941311074209691963}
@@ -562,20 +561,6 @@ MonoBehaviour:
   lastGravityDir: {x: 0, y: 0, z: 0}
   overrideMovement: 0
   placeToTransform: {fileID: 0}
---- !u!114 &4238406705068776974
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7183096211676564755}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1236dbba8d2c74bf89fe2168e056f5bc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::CameraLook
-  ShowTopMostFoldoutHeaderGroup: 1
-  mouseSensitivity: 300
 --- !u!114 &2872625917057936138
 MonoBehaviour:
   m_ObjectHideFlags: 0
