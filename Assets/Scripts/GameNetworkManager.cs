@@ -195,14 +195,16 @@ public class GameNetworkManager : MonoBehaviour
             yield return null;
         }
 
-        yield return new WaitForSeconds(10);
+        yield return new WaitForSeconds(1);
 
-        if(PlayerNetworkManager.instance == null)
+        if (PlayerNetworkManager.instance == null)
         {
             Debug.Log("ASDASFJASGFNMSF");
         }
 
-        PlayerNetworkManager.instance.spawnMeInCoachRpc(NetworkManager.Singleton.LocalClientId, SteamClient.SteamId);
+        // PlayerNetworkManager.instance.spawnMeInCoachRpc(NetworkManager.Singleton.LocalClientId, SteamClient.SteamId);
+        
+        PlayerNetworkManager.instance.spawnMeInCoachRpc(0, SteamClient.SteamId);
     }
 
     public void Disconnected()
