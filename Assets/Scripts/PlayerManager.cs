@@ -8,6 +8,8 @@ public class PlayerManager : NetworkBehaviour
 
     [SerializeField] SpringJointMaker springJointMaker;
 
+    [SerializeField] Transform handsPosition;
+
     bool holdingPlayer = false;
 
     ulong heldPlayerId; // steam id
@@ -66,6 +68,13 @@ public class PlayerManager : NetworkBehaviour
 
     void Update()
     {
+        // if (!IsOwner)
+        // {
+        //     return;
+        // }
+
+        handsPosition.localPosition = new Vector3(0, 0, 1);
+
         if (IsOwner && Input.GetKeyUp(KeyCode.E))
         {
             if (holdingPlayer)

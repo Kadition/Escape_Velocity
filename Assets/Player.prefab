@@ -571,6 +571,7 @@ MonoBehaviour:
   ShowTopMostFoldoutHeaderGroup: 1
   steam_id: 0
   springJointMaker: {fileID: 4446998762717341229}
+  handsPosition: {fileID: 2666911934580109959}
   rb: {fileID: 223971613767819608}
   handRigidbody: {fileID: 7485559531041035850}
   connectedRigidbody: {fileID: 3305373822141675798}
