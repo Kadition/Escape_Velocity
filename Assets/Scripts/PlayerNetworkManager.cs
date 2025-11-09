@@ -60,6 +60,8 @@ public class PlayerNetworkManager : NetworkBehaviour
 
         springJointMaker.connectedRigidbody = connectInstance.GetComponent<Rigidbody>();
 
+        playerInstance.GetComponent<PlayerManager>().connectedPosition = connectInstance.transform;
+
         playerInstance.GetComponent<NetworkObject>().SpawnWithOwnership(id);
 
         connectInstance.GetComponent<NetworkObject>().SpawnWithOwnership(id);

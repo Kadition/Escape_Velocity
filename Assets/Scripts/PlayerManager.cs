@@ -20,7 +20,7 @@ public class PlayerManager : NetworkBehaviour
     // [SerializeField] Rigidbody connectedRigidbody;
 
     // ! use this for what the other person should copy
-    [SerializeField] public Transform connectedPosition;
+    public Transform connectedPosition;
 
     void Start()
     {
