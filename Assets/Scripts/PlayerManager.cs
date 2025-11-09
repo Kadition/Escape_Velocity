@@ -124,7 +124,7 @@ public class PlayerManager : NetworkBehaviour
                         springJointMaker.MakeJoint();
                         heldPlayerId = player.GetComponent<PlayerManager>().steam_id;
 
-                        gameObject.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ | RigidbodyConstraints.FreezeRotation;
+                        gameObject.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
 
                         OnClickPlayerRpc(player.GetComponent<PlayerManager>().steam_id);
                         break;
