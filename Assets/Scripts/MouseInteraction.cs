@@ -1,73 +1,74 @@
-using UnityEngine.UI;
 using UnityEngine;
+using UnityEngine.UI;
 using TMPro;
-
-
-// Items with interactable component can be moved by mousing over them and pressing the right mouse button
-// attached to the player object
 
 public class MouseInteraction : MonoBehaviour
 {
-    //UI panel which appears when the user can interact
-    public Image interactableImage;
-    //Text tellign the playe rthey can carry  an item
-    public TextMeshProUGUI interactableText;
-    //may have an issue with cam, if so, just revert back to m_camera version.
-    public Camera cam;
-    public GameObject obj;
-
-
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        //setting default values
-        interactableImage.gameObject.SetActive(false);
-    }
+    [SerializeField] private Canvas interactableCanvas;
+    private Image interactableImage;
+    private TextMeshProUGUI interactableText;
+    private Camera cam;
+    private GameObject obj;
 
     void Awake()
     {
-        //sets a reference for the main camera.
         cam = Camera.main;
     }
 
-    // Update is called once per frame
+    void Start()
+    {
+        // Get UI elements
+        interactableImage = interactableCanvas.transform.GetChild(0).GetComponent<Image>();
+        interactableText = interactableImage.transform.GetChild(0).GetComponent<TextMeshProUGUI>();
+
+        // Hide by default
+        interactableImage.gameObject.SetActive(false);
+        interactableText.gameObject.SetActive(false);
+    }
+
     void Update()
     {
-        //Constantly shoots a ray at mousePos
         Vector3 mousePosition = Input.mousePosition;
         Ray ray = cam.ScreenPointToRay(mousePosition);
 
-        //checks if the ray hit an interactable object
-        if (Physics.Raycast(ray, out RaycastHit hit, 2f) && obj.GetComponent<Interactable>() != null)
+        // Cast a ray from the camera to the mouse position
+        if (Physics.Raycast(ray, out RaycastHit hit, 2f))
         {
-            //sets obj to the object hit by the ray at mouse pos, a panel appears when the player can interact with the item
-            obj = hit.collider.gameObject;
-            interactableImage.gameObject.SetActive(true);
+            GameObject hitObj = hit.collider.gameObject;
+            Interactable interactable = hitObj.GetComponent<Interactable>();
 
-            //checks if the objects being hit has iteractable component
-            if (obj.GetComponent<Interactable>() != null)
+            if (interactable != null)
             {
-                //Makes carry prompt text appear
+                obj = hitObj;
+                interactableImage.gameObject.SetActive(true);
                 interactableText.gameObject.SetActive(true);
+                Debug.Log("Hovering over interactable: " + obj.name);
             }
             else
             {
-                //Makes carry prompt text disappear
-                interactableText.gameObject.SetActive(false);
+                ClearUI();
             }
         }
-
-        //Sets obj to an empty object if prior condition fails and deactivated UI
         else
         {
-            obj = null;
-            interactableImage.gameObject.SetActive(false);
+            ClearUI();
         }
 
-        //Interact with object when right mouse button is pressed
-        if (Input.GetMouseButtonDown(1) && obj.GetComponent<Interactable>() != null)
+        // Interact on right-click
+        if (Input.GetMouseButtonDown(1) && obj != null)
         {
-            obj.GetComponent<Interactable>().interact();
+            Interactable interactable = obj.GetComponent<Interactable>();
+            if (interactable != null)
+            {
+                interactable.interact();
+            }
         }
+    }
+
+    private void ClearUI()
+    {
+        obj = null;
+        interactableImage.gameObject.SetActive(false);
+        interactableText.gameObject.SetActive(false);
     }
 }
