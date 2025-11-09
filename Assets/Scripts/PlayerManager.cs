@@ -108,7 +108,7 @@ public class PlayerManager : NetworkBehaviour
                         connectedPosition.position = player.transform.position;
                         springJointMaker.MakeJoint();
                         heldPlayerId = player.GetComponent<PlayerManager>().steam_id;
-                        OnClickPlayerRpc(player.GetComponent<PlayerManager>().steam_id, SteamClient.SteamId);
+                        OnClickPlayerRpc(player.GetComponent<PlayerManager>().steam_id);
                         break;
                     }
                 }
@@ -117,7 +117,7 @@ public class PlayerManager : NetworkBehaviour
     }
 
     [Rpc(SendTo.Everyone)]
-    public void OnClickPlayerRpc(ulong id, ulong my_id)
+    public void OnClickPlayerRpc(ulong id)
     {
         springJointMaker.attached = true;
 
@@ -133,23 +133,11 @@ public class PlayerManager : NetworkBehaviour
 
                 PlayerManager playerManager = player.GetComponent<PlayerManager>();
 
-                if (playerManager.steam_id == my_id)
+                if (playerManager.steam_id == id)
                 {
-                    foreach (GameObject playerme in playerlist)
-                    {
-                        if (playerme == gameObject)
-                        {
-                            continue;
-                        }
-
-                        if (playerme.GetComponent<PlayerManager>().steam_id == SteamClient.SteamId)
-                        {
-                            playerme.GetComponent<PlayerController>().overrideMovement = true;
-                            playerme.GetComponent<PlayerController>().placeToTransform = connectedPosition;
-                            Debug.LogWarning("WEEEEEEEEEEEEEEEEEE");
-                            break;
-                        }
-                    }
+                    player.GetComponent<PlayerController>().overrideMovement = true;
+                    player.GetComponent<PlayerController>().placeToTransform = connectedPosition;
+                    Debug.LogWarning("WEEEEEEEEEEEEEEEEEE");
                     break;
                 }
             }
@@ -169,6 +157,7 @@ public class PlayerManager : NetworkBehaviour
                 if (player.GetComponent<PlayerManager>().steam_id == SteamClient.SteamId)
                 {
                     player.GetComponent<PlayerController>().overrideMovement = false;
+                    Debug.LogWarning("WEEEEEEEEEEEEEEEEEE2");
                 }
             }
         }
