@@ -102,8 +102,6 @@ public class PlayerController : NetworkBehaviour
         {
             transform.position = placeToTransform.position;
 
-            float mouseX = -Input.GetAxis("Mouse X") * PlayerLook.mouseSensitivity * Time.deltaTime;
-
             float spin = (Input.GetButton("A") ? 1 : 0) + (Input.GetButton("D") ? -1 : 0);
 
             // Use player-relative UP, not world up
