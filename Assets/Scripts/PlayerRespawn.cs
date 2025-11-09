@@ -71,6 +71,7 @@ public class PlayerRespawn : NetworkBehaviour
 
         // Respawn player at spawn point
         transform.position = respawnPoint;
+        gameObject.GetComponent<Rigidbody>().linearVelocity = Vector3.zero;
 
         if (wilhelmScream != null)
         {

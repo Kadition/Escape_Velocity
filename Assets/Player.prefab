@@ -9331,6 +9331,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 697e4f60c1d0e524f8704539dbe82eed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlaceRopeEndPoints
+  ShowTopMostFoldoutHeaderGroup: 1
   anotherEndExists: 0
   ropeEndPrefab: {fileID: 5154886381253888266, guid: d8ed2768c0989b2459425baeadd80258, type: 3}
   ropeParentPrefab: {fileID: 4952928347689011854, guid: f62536b94a3743041be6925a4036cff7, type: 3}
@@ -9348,6 +9349,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 333ad0c7a2593114b9db2a613c3f1d25, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ZeroGTimer
+  ShowTopMostFoldoutHeaderGroup: 1
   timerLength: 10
   redCanvas: {fileID: 8541564435203641746, guid: a429ddea3a2deda47b69f5a68feddfac, type: 3}
   redImage: {fileID: 1118504176727045465, guid: 12763a68d7643674985f009fb446cbef, type: 3}
@@ -9681,6 +9683,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6ce58132686abf499da995f28ecb2de, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerRespawn
+  ShowTopMostFoldoutHeaderGroup: 1
   wilhelmScream:
   - {fileID: 8300000, guid: 311f572e74a54354dba1a7a38fcf7c3e, type: 3}
   - {fileID: 8300000, guid: 7d046407f07e47643975834002d2fd13, type: 3}
