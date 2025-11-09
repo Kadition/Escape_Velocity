@@ -17,6 +17,8 @@ public class PlanetScript : MonoBehaviour
     public float minScale = 1.0f;
     public float maxScale = 1.5f;
     private List<Vector3> placedDirections = new List<Vector3>();
+    private float objectCullSize = 15f; // Distance consistency scaler
+
     void Start()
     {
         visualRadius = transform.localScale.x * 0.5f * KADENBAD; // Bang
@@ -67,5 +69,24 @@ public class PlanetScript : MonoBehaviour
 
         float scale = Random.Range(minScale, maxScale);
         rock.transform.localScale *= scale;
+        LODGroup lod = rock.GetComponent<LODGroup>();
+        if (lod == null)
+            lod = rock.AddComponent<LODGroup>();
+
+        Renderer[] renderers = rock.GetComponentsInChildren<Renderer>();
+
+        // LOD0: visible
+        // LOD1: invisible (distance-cull)
+        LOD[] lods = new LOD[2];
+        lods[0] = new LOD(0.5f, renderers);      // visible when close
+        lods[1] = new LOD(0.01f, new Renderer[0]); // disappears when far
+        lod.SetLODs(lods);
+
+        lod.RecalculateBounds();
+
+        // FORCE CONSISTENT DISAPPEAR DISTANCE:
+        lod.size = objectCullSize / scale; // <--- SHRINK or GROW this to tune render distance
+
+        lod.fadeMode = LODFadeMode.CrossFade; // Optional: smooth fade-out
     }
 }
