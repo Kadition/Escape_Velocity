@@ -7287,7 +7287,28 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.Components.NetworkAnimator
   ShowTopMostFoldoutHeaderGroup: 1
-  TransitionStateInfoList: []
+  TransitionStateInfoList:
+  - IsCrossFadeExit: 0
+    Layer: 0
+    OriginatingState: 2081823275
+    DestinationState: 125937960
+    TransitionDuration: 0.25
+    TriggerNameHash: -2141573296
+    TransitionIndex: 0
+  - IsCrossFadeExit: 0
+    Layer: 0
+    OriginatingState: 765711723
+    DestinationState: 125937960
+    TransitionDuration: 0.25
+    TriggerNameHash: -2141573296
+    TransitionIndex: 0
+  - IsCrossFadeExit: 0
+    Layer: 0
+    OriginatingState: 1533177906
+    DestinationState: 125937960
+    TransitionDuration: 0.25
+    TriggerNameHash: -2141573296
+    TransitionIndex: 0
   m_Animator: {fileID: 1120928676956946191}
 --- !u!1 &5929271631033719203
 GameObject:
@@ -9552,6 +9573,7 @@ MonoBehaviour:
   ShowTopMostFoldoutHeaderGroup: 1
   grounded: 0
   rig: {fileID: 223971613767819608}
+  animator: {fileID: 1120928676956946191}
   moveForce: 40
   jumpForce: 6
   flipSpeed: 2
