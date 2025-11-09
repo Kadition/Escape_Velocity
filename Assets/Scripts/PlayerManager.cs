@@ -12,11 +12,13 @@ public class PlayerManager : NetworkBehaviour
 
     ulong heldPlayerId; // steam id
 
-    GameObject attachedPlayer = null;
-
     [SerializeField] Rigidbody rb;
 
-    private Transform
+    [SerializeField] Rigidbody handRigidbody;
+    [SerializeField] Rigidbody connectedRigidbody;
+
+    // ! use this for what the other person should copy
+    [SerializeField] public Transform connectedPosition;
 
     void Start()
     {
@@ -59,27 +61,8 @@ public class PlayerManager : NetworkBehaviour
 
             VoiceRelay.instance.vocalAudioPlayers.Add(steamiD, vocalAudioPlayer);
         }
-
-        //     StartCoroutine(enumeratorThingy());
     }
 
-    // IEnumerator enumeratorThingy()
-    // {
-    //     yield return new WaitForSeconds(5);
-
-    //     VoiceRelay.instance.vocalAudioPlayers.Clear();
-
-    //     foreach (GameObject player in GameObject.FindGameObjectsWithTag("Player"))
-    //     {
-    //         VocalAudioPlayer vocalAudioPlayer = player.GetComponent<VocalAudioPlayer>();
-
-    //         ulong steamiD = player.GetComponent<PlayerManager>().steam_id;
-
-    //         Debug.Log("steam id: " + steamiD);
-
-    //         VoiceRelay.instance.vocalAudioPlayers.Add(steamiD, vocalAudioPlayer);
-    //     }
-    // }
 
     void Update()
     {
@@ -101,7 +84,8 @@ public class PlayerManager : NetworkBehaviour
 
                     if (Vector3.Distance(player.transform.position, transform.position) < 2)
                     {
-                        OnClickPlayerRpc(player.GetComponent<PlayerManager>().steam_id);
+                        holdingPlayer = true;
+                        OnClickPlayerRpc(player.GetComponent<PlayerManager>().steam_id, SteamClient.SteamId);
                         break;
                     }
                 }
@@ -110,15 +94,56 @@ public class PlayerManager : NetworkBehaviour
     }
 
     [Rpc(SendTo.Everyone)]
-    public void OnClickPlayerRpc(ulong id)
+    public void OnClickPlayerRpc(ulong id, ulong my_id)
     {
-        if(id == )
+        if(id == SteamClient.SteamId)
+        {
+            GameObject[] playerlist = GameObject.FindGameObjectsWithTag("Player");
+            foreach (GameObject player in playerlist)
+            {
+                if (player == gameObject)
+                {
+                    continue;
+                }
+
+                PlayerManager playerManager = player.GetComponent<PlayerManager>();
+
+                if (playerManager.steam_id == my_id)
+                {
+                    foreach (GameObject playerme in playerlist)
+                    {
+                        if (playerme == gameObject)
+                        {
+                            continue;
+                        }
+
+                        if (playerme.GetComponent<PlayerManager>().steam_id == SteamClient.SteamId)
+                        {
+                            playerme.GetComponent<PlayerController>().overrideMovement = true;
+                            playerme.GetComponent<PlayerController>().placeToTransform = connectedPosition;
+                            break;
+                        }
+                    }
+                    break;
+                }
+            }
+        }
     }
 
     [Rpc(SendTo.Everyone)]
     public void OnReleasePlayerRpc(ulong id)
     {
-        
+        if(id == SteamClient.SteamId)
+        {
+            GameObject[] playerlist = GameObject.FindGameObjectsWithTag("Player");
+            foreach (GameObject player in playerlist)
+            {
+                if (player.GetComponent<PlayerManager>().steam_id == SteamClient.SteamId)
+                {
+                    player.GetComponent<PlayerController>().overrideMovement = false;
+                }
+            }
+        }
     }
 
     // [Rpc(SendTo.Everyone)]
