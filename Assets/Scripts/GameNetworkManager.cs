@@ -193,14 +193,19 @@ public class GameNetworkManager : MonoBehaviour
     while(NetworkManager.Singleton == null || !NetworkManager.Singleton.IsListening || PlayerNetworkManager.instance == null)
         yield return null;
 
-    // Wait until this client is connected
     bool connected = false;
-    NetworkManager.Singleton.OnClientConnectedCallback += (id) => {
+    System.Action<ulong> handler = null;
+    handler = (id) => {
         if (id == NetworkManager.Singleton.LocalClientId)
             connected = true;
     };
+    NetworkManager.Singleton.OnClientConnectedCallback += handler;
+
     while (!connected)
         yield return null;
+
+    // Unsubscribe to prevent memory leak
+    NetworkManager.Singleton.OnClientConnectedCallback -= handler;
 
     PlayerNetworkManager.instance.spawnMeInCoachRpc(NetworkManager.Singleton.LocalClientId, SteamClient.SteamId);
     }
