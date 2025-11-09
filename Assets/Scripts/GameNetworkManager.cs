@@ -195,7 +195,7 @@ public class GameNetworkManager : MonoBehaviour
             yield return null;
         }
 
-        yield return new WaitForSeconds(3);
+        yield return new WaitForSeconds(10);
 
         if(PlayerNetworkManager.instance == null)
         {
