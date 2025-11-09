@@ -85,6 +85,8 @@ public class PlayerManager : NetworkBehaviour
                     if (Vector3.Distance(player.transform.position, transform.position) < 2)
                     {
                         holdingPlayer = true;
+                        connectedPosition.position = player.transform.position;
+                        springJointMaker.MakeJoint();
                         OnClickPlayerRpc(player.GetComponent<PlayerManager>().steam_id, SteamClient.SteamId);
                         break;
                     }

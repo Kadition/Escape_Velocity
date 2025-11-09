@@ -9,8 +9,9 @@ public class SpringJointMaker : MonoBehaviour
 
     public GameObject rope;
 
-    [HideInInspector]
-    public Transform connectedPlayer;
+    [SerializeField] private GameObject connectedPosition;
+
+    [SerializeField] private Rigidbody connectedRigidbody;
 
     public bool attached = false;
 
@@ -23,23 +24,23 @@ public class SpringJointMaker : MonoBehaviour
             return;
         }
 
-        AlignCylinder(handsLocation.transform.position, connectedPlayer.position);
+        AlignCylinder(handsLocation.transform.position, connectedPosition.transform.position);
     }
 
-    public void MakeJoint(Rigidbody rb)
+    public void MakeJoint()
     {
         if (springJoint != null)
         {
             Destroy(springJoint);
         }
 
-        springJoint = gameObject.AddComponent<SpringJoint>();
+        springJoint = handsLocation.AddComponent<SpringJoint>();
 
         springJoint.spring = springAmount;
 
         springJoint.damper = damperAmount;
 
-        springJoint.connectedBody = rb;
+        springJoint.connectedBody = connectedRigidbody;
 
         springJoint.anchor = new Vector3(0, 0, 0);
 
