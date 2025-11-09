@@ -6,6 +6,8 @@ public class PlayerNetworkManager : NetworkBehaviour
 {
     public static PlayerNetworkManager instance;
     [SerializeField] private GameObject playerPrefab;
+
+    [SerializeField] private GameObject handlePrefab;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
 
     void Awake()
@@ -65,5 +67,13 @@ public class PlayerNetworkManager : NetworkBehaviour
         {
             Debug.Log("player doesnt exist in voice data");
         }
+    }
+
+    [Rpc(SendTo.Server)]
+    public void spawnTheRigidCoachRpc(ulong id)
+    {
+        GameObject coachInstance = Instantiate(handlePrefab);
+
+        coachInstance.GetComponent<NetworkObject>().SpawnWithOwnership(id);
     }
 }

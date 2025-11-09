@@ -10,9 +10,13 @@ public class PlayerManager : NetworkBehaviour
 
     bool holdingPlayer = false;
 
+    ulong heldPlayerId; // steam id
+
     GameObject attachedPlayer = null;
 
     [SerializeField] Rigidbody rb;
+
+    private Transform
 
     void Start()
     {
@@ -79,11 +83,12 @@ public class PlayerManager : NetworkBehaviour
 
     void Update()
     {
-        if(IsOwner && Input.GetKeyUp(KeyCode.E))
+        if (IsOwner && Input.GetKeyUp(KeyCode.E))
         {
             if (holdingPlayer)
             {
-                OnReleasePlayerRpc();
+                holdingPlayer = false;
+                OnReleasePlayerRpc(heldPlayerId);
             }
             else
             {
@@ -94,65 +99,77 @@ public class PlayerManager : NetworkBehaviour
                         continue;
                     }
 
-                    if (Vector3.Distance(player.transform.position, transform.position) < 3)
+                    if (Vector3.Distance(player.transform.position, transform.position) < 2)
                     {
                         OnClickPlayerRpc(player.GetComponent<PlayerManager>().steam_id);
                         break;
                     }
                 }
-            }   
+            }
         }
     }
 
     [Rpc(SendTo.Everyone)]
-    public void OnClickPlayerRpc(ulong steamID)
+    public void OnClickPlayerRpc(ulong id)
     {
-        attachedPlayer = null;
-
-        foreach (GameObject player in GameObject.FindGameObjectsWithTag("Player"))
-        {
-            if (player == gameObject)
-            {
-                continue;
-            }
-
-            if (player.GetComponent<PlayerManager>().steam_id == steamID)
-            {
-                attachedPlayer = player;
-                break;
-            }
-        }
-
-        springJointMaker.MakeJoint(attachedPlayer.GetComponent<Rigidbody>());
-
-        springJointMaker.connectedPlayer = attachedPlayer.transform;
-
-        springJointMaker.rope.SetActive(true);
-
-        springJointMaker.attached = true;
-
-        rb.constraints = RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ | RigidbodyConstraints.FreezeRotation;
-
-        holdingPlayer = true;
+        if(id == )
     }
+
+    [Rpc(SendTo.Everyone)]
+    public void OnReleasePlayerRpc(ulong id)
+    {
+        
+    }
+
+    // [Rpc(SendTo.Everyone)]
+    // public void OnClickPlayerRpc(ulong steamID)
+    // {
+    //     attachedPlayer = null;
+
+    //     foreach (GameObject player in GameObject.FindGameObjectsWithTag("Player"))
+    //     {
+    //         if (player == gameObject)
+    //         {
+    //             continue;
+    //         }
+
+    //         if (player.GetComponent<PlayerManager>().steam_id == steamID)
+    //         {
+    //             attachedPlayer = player;
+    //             break;
+    //         }
+    //     }
+
+    //     springJointMaker.MakeJoint(attachedPlayer.GetComponent<Rigidbody>());
+
+    //     springJointMaker.connectedPlayer = attachedPlayer.transform;
+
+    //     springJointMaker.rope.SetActive(true);
+
+    //     springJointMaker.attached = true;
+
+    //     rb.constraints = RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ | RigidbodyConstraints.FreezeRotation;
+
+    //     holdingPlayer = true;
+    // }
     
-    [Rpc(SendTo.Everyone)]
-    public void OnReleasePlayerRpc()
-    {
-        attachedPlayer = null;
+    // [Rpc(SendTo.Everyone)]
+    // public void OnReleasePlayerRpc()
+    // {
+    //     attachedPlayer = null;
 
-        springJointMaker.connectedPlayer = null;
+    //     springJointMaker.connectedPlayer = null;
 
-        springJointMaker.attached = false;
+    //     springJointMaker.attached = false;
 
-        springJointMaker.rope.SetActive(false);
+    //     springJointMaker.rope.SetActive(false);
 
-        holdingPlayer = false;
+    //     holdingPlayer = false;
 
-        rb.constraints = RigidbodyConstraints.None;
+    //     rb.constraints = RigidbodyConstraints.None;
 
-        rb.constraints = RigidbodyConstraints.FreezeRotation;
+    //     rb.constraints = RigidbodyConstraints.FreezeRotation;
 
-        Destroy(GetComponent<SpringJoint>());
-    }
+    //     Destroy(GetComponent<SpringJoint>());
+    // }
 }
