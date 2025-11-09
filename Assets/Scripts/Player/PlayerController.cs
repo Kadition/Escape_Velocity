@@ -1,3 +1,4 @@
+using System;
 using Unity.Netcode;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -24,6 +25,9 @@ public class PlayerController : NetworkBehaviour
     public Vector3 lastGravityDir;
 
     public bool overrideMovement = false;
+
+    private float quickTime = 0.25f;
+    private float quickTimeElapsed = 0f;
 
     GameObject[] planetList;
 
@@ -214,9 +218,16 @@ public class PlayerController : NetworkBehaviour
                 rig.AddForce(-gravityDirection * jumpForce, ForceMode.Impulse);
             }
 
-            // if(rig.linearVelocity.magnitude > maxGroundedVelocity){
-                //rig.linearVelocity = rig.linearVelocity * (maxGroundedVelocity / rig.linearVelocity.magnitude);
-            // }
+            if(rig.linearVelocity.magnitude > maxGroundedVelocity){
+                quickTimeElapsed += Time.fixedDeltaTime;
+                if (quickTimeElapsed > quickTime)
+                {
+                    rig.linearVelocity = rig.linearVelocity * (maxGroundedVelocity / rig.linearVelocity.magnitude);
+                }
+            }
+            else{
+                quickTimeElapsed = 0;
+            }
         }
         else{
             animator.SetBool("isGrounded", false);

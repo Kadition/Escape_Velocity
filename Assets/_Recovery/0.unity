@@ -232,10 +232,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 3242703007424846236, guid: f7fc9c5b2c9725a48b31819e45e940ff, type: 3}
-      propertyPath: coefFriction
-      value: 2.5
-      objectReference: {fileID: 0}
     - target: {fileID: 7124928777800563685, guid: f7fc9c5b2c9725a48b31819e45e940ff, type: 3}
       propertyPath: m_Name
       value: Planet (7)
@@ -474,10 +470,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Planet (10)
       objectReference: {fileID: 0}
-    - target: {fileID: 8610185943206516761, guid: dec3cd7da26938a4da6d81a05d7bc102, type: 3}
-      propertyPath: coefFriction
-      value: 2.5
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -624,10 +616,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 4164105170489195615, guid: 29738f2a5a355d54ebc973eb14ad976f, type: 3}
-      propertyPath: coefFriction
-      value: 2.5
-      objectReference: {fileID: 0}
     - target: {fileID: 8447141666740579661, guid: 29738f2a5a355d54ebc973eb14ad976f, type: 3}
       propertyPath: m_Name
       value: Planet (5)
@@ -812,10 +800,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1602077148749074902, guid: df75a69216353344787eea31ae73f886, type: 3}
-      propertyPath: coefFriction
-      value: 2.5
-      objectReference: {fileID: 0}
     - target: {fileID: 5065423669546884941, guid: df75a69216353344787eea31ae73f886, type: 3}
       propertyPath: m_LocalPosition.x
       value: 165
@@ -826,7 +810,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5065423669546884941, guid: df75a69216353344787eea31ae73f886, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -404
+      value: -401
       objectReference: {fileID: 0}
     - target: {fileID: 5065423669546884941, guid: df75a69216353344787eea31ae73f886, type: 3}
       propertyPath: m_LocalRotation.w
@@ -896,7 +880,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 4031378150
+  GlobalObjectIdHash: 934969357
   InScenePlacedSourceGlobalObjectIdHash: 0
   DeferredDespawnTick: 0
   Ownership: 1
@@ -1110,10 +1094,6 @@ PrefabInstance:
     - target: {fileID: 4586750437008809975, guid: 2dd2e5cd9d957d74a8cc9c264eff1072, type: 3}
       propertyPath: m_Name
       value: Planet (3)
-      objectReference: {fileID: 0}
-    - target: {fileID: 8423192719768323173, guid: 2dd2e5cd9d957d74a8cc9c264eff1072, type: 3}
-      propertyPath: coefFriction
-      value: 2.5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1853,10 +1833,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Planet (6)
       objectReference: {fileID: 0}
-    - target: {fileID: 6108197416441854106, guid: d2064a63aea7b8e47addc75884b152f3, type: 3}
-      propertyPath: coefFriction
-      value: 0.01
-      objectReference: {fileID: 0}
     - target: {fileID: 6884075568919695780, guid: d2064a63aea7b8e47addc75884b152f3, type: 3}
       propertyPath: m_LocalPosition.x
       value: -381
@@ -2083,10 +2059,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1159751882757146261, guid: f4089246b2e065843bb8a6387abc7c86, type: 3}
-      propertyPath: coefFriction
-      value: 2.5
-      objectReference: {fileID: 0}
     - target: {fileID: 7141049047564759839, guid: f4089246b2e065843bb8a6387abc7c86, type: 3}
       propertyPath: m_Name
       value: Planet (2)
@@ -2710,7 +2682,7 @@ MonoBehaviour:
   dropOff: 0.5
   affectRadiusFactor: 1.5
   visualRadius: 0
-  coefFriction: 2.5
+  coefFriction: 1.5
   numObjectsGenerated: 150
   objectsToGenerate:
   - {fileID: 8933749797280981253, guid: 46e654c102087004988f6462e5ae7133, type: 3}
