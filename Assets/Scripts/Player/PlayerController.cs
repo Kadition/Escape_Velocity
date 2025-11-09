@@ -32,6 +32,8 @@ public class PlayerController : NetworkBehaviour
     private float quickTimer = 0f;
     GameObject[] planetList;
 
+    private bool savingSlam = false;
+
     public Transform placeToTransform;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -220,20 +222,18 @@ public class PlayerController : NetworkBehaviour
             }
 
             if(rig.linearVelocity.magnitude > maxGroundedVelocity){
-                if(lastOverridden && !overrideMovement || quickTimer > 0f){
-                    quickTimer += Time.fixedDeltaTime;
-                    if(quickTimer > quickBuffer){
-                        quickTimer = 0f;
-                    }
-                }
-                else if(!overrideMovement){
+                if(savingSlam){
                     rig.linearVelocity = rig.linearVelocity * (maxGroundedVelocity / rig.linearVelocity.magnitude);
                 }
             }
+            savingSlam = false;
 
-            
+
         }
         else{
+            if(!gravityUpdated){
+                savingSlam = true;
+            }
             animator.SetBool("isGrounded", false);
 
             Vector3 moveDir = (transform.forward * z + transform.right * x).normalized;

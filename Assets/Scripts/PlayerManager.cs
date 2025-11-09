@@ -125,7 +125,7 @@ public class PlayerManager : NetworkBehaviour
                     if (Vector3.Distance(player.transform.position, transform.position) < 2)
                     {
                         holdingPlayer = true;
-                        connectedPosition.position = player.transform.position;
+                        connectedPosition.position = player.transform.position + player.transform.up;
                         springJointMaker.MakeJoint();
                         heldPlayerId = player.GetComponent<PlayerManager>().steam_id;
 
