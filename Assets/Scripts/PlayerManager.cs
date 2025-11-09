@@ -91,6 +91,11 @@ public class PlayerManager : NetworkBehaviour
             if (holdingPlayer)
             {
                 holdingPlayer = false;
+
+                gameObject.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.None;
+
+                gameObject.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeRotation;
+
                 OnReleasePlayerRpc(heldPlayerId, connectedPosition.parent.GetComponent<Rigidbody>().linearVelocity);
             }
             else
@@ -108,6 +113,9 @@ public class PlayerManager : NetworkBehaviour
                         connectedPosition.position = player.transform.position;
                         springJointMaker.MakeJoint();
                         heldPlayerId = player.GetComponent<PlayerManager>().steam_id;
+
+                        gameObject.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ | RigidbodyConstraints.FreezeRotation;
+
                         OnClickPlayerRpc(player.GetComponent<PlayerManager>().steam_id);
                         break;
                     }
